@@ -1,0 +1,68 @@
+@import './base.css';
+
+.myBox {
+    background-image: url('../images/img-fond.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    flex-direction: column;
+    display: flex;
+    padding: 2rem;
+}
+
+.u-about {
+    width: 60%;
+    height: fit-content;
+    place-self: center;
+    color: #2a5222;
+}
+
+.d-flex {
+    display: flex;
+    justify-content: space-around;
+}
+
+.justify {
+    text-align: justify;
+}
+
+.slogan {
+    align-self: center;
+    margin-bottom: 2rem;
+    color: white;
+    font-size: 40px;
+}
+
+.libre-baskerville-regular {
+    font-weight: 400;
+    font-style: normal;
+}
+
+.siteName {
+    color: #2a5222;
+    font-size: 1.1rem;
+}
+
+body {
+    background-image: url("/img/background-grey-line.png");
+    background-size: cover;
+}
+
+.horizontal-nav {
+    background-color: white;
+}
+
+.bona-nova-regular-italic {
+    font-family: 'Bona Nova', serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.blue-lagon {
+    color: #223C4D;
+}
+
+body {
+    font-family: "Bona Nova", serif;
+    font-weight: 400;
+    font-style: normal;
+}

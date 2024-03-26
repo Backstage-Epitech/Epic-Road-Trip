@@ -5,15 +5,16 @@
     "vitest.config.*",
     "cypress.config.*",
     "nightwatch.conf.*",
-    "playwright.config.*"
+    "playwright.config.*",
+    "src/**/*.ts",
+    "src/**/*.vue",
   ],
   "compilerOptions": {
     "composite": true,
-    "noEmit": true,
+    "noEmit": false, // Mettre à false pour générer des fichiers de sortie
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "types": ["node"]
+    "types": ["node"],
   }
 }
