@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ServiceBoxComponent from '../components/ServiceBoxComponent.vue'
-import axios from 'axios';
+import axios from 'redaxios';
 import { ref } from 'vue';
 
 const email = ref('');
