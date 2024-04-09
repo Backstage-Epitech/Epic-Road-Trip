@@ -10,8 +10,11 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
+import mitt from 'mitt';
 
 const app = createApp(App)
+const emitter = mitt();
+app.config.globalProperties.emitter = emitter;
 
 // VueDatePicker
 import VueDatePicker from '@vuepic/vue-datepicker';

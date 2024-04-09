@@ -1,3 +1,28 @@
+<script lang="ts">
+
+import EventBus from './EventBus.js'
+
+export default {
+  data() {
+    return {
+      userIsConnected: false
+    }
+  },
+  methods: {
+    cleanLocalStorage() {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      this.userIsConnected = false;
+    }
+  },
+  mounted() {
+    EventBus.on("EVENT_USER_LOGIN", (data) => {
+      this.userIsConnected = true;
+    });
+  }
+}
+</script>
+
 <template>
   <div class="v-container mx-auto d-flex align-center justify-center">
     <router-link to="/" class="v-btn v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-text">
@@ -76,7 +101,7 @@
     <router-link to="/login" class="ms-4 v-btn v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-text">
       <span class="v-btn__overlay"></span>
       <span class="v-btn__underlay"></span>
-      <span class="v-btn__content">Se connecter</span>
+      <span class="v-btn__content" @click="cleanLocalStorage">{{ userIsConnected ? "Se déconnecter" : "Se connecter" }}</span>
     </router-link>
   </div>
 </template>
