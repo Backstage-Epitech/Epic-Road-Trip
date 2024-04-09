@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ServiceBoxComponent from '../components/ServiceBoxComponent.vue'
-import axios from 'redaxios';
+import axios from 'axios';
 import { ref } from 'vue';
 
 const email = ref('');
@@ -39,6 +39,9 @@ async function loginUser() {
       <v-col class="my-12 mx-auto">
         <v-sheet class="mx-auto" max-width="300">
           <h3 class="mb-6 text-center font-weight-bold">Se connecter</h3>
+          <RouterLink v-bind:to="'/register'">
+            Ou cliquez ici pour créer un compte
+          </RouterLink>
           <v-divider></v-divider>
 
           <v-form @submit.prevent="loginUser">
