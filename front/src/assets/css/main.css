@@ -1,5 +1,11 @@
 @import './base.css';
 
+body {
+    font-family: "Bona Nova", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 .myBox {
     background-image: url('../images/img-fond.png');
     background-size: cover;
@@ -61,8 +67,87 @@ body {
     color: #223C4D;
 }
 
-body {
-    font-family: "Bona Nova", serif;
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper input[type="number"] {
+    padding-right: 20px;
+}
+
+.currency-symbol {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+input.search_input.search_input_4.bg-white {
+    width: 110px;
+}
+
+.home_search_container {
+    top: -353px;
+    width: calc(100% + 122px);
+    left: -61px;
+    padding-top: 47px;
+    padding-left: 61px;
+    padding-right: 61px;
+    background: rgba(255, 255, 255, 0.26);
+    border-radius: 12px;
+}
+
+.home_search_title {
+    width: 247px;
+    height: 55px;
+    margin-left: auto;
+    margin-right: auto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    line-height: 55px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    color: #2e2e2e;
     font-weight: 400;
-    font-style: normal;
+    text-align: center;
+}
+
+.search_input{
+    height: 50px;
+    border: none;
+    outline: none;
+    padding-left: 17px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #72728c !important;
+}
+
+.citySelect {
+    width: 200px;    
+}
+
+
+.home_search_button {
+    width: 161px;
+    height: 52px;
+    background: #76931f;
+    color: #ffffff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: uppercase;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+input.dp__pointer.dp__input_readonly.dp__input.dp__input_icon_pad.dp__input_reg {
+    width: 16em;
+    height: 50px;
+    font-size: 14px !important;
+    border: none;
+    color: #72728c !important;
 }
