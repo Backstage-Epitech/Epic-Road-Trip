@@ -31,7 +31,7 @@ export default {
               .then(resp => {
                   localStorage.setItem('user', JSON.stringify(resp.data.user))
                   localStorage.setItem('token', JSON.stringify(resp.data.token))
-                  this.$router.push('/home')
+                  this.$router.push('/')
                 }
               )
           }

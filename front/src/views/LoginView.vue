@@ -19,6 +19,8 @@ async function loginUser() {
 
     if (response.data.token) {
       alert('Vous êtes connecté'); // Si la réponse contient un jeton d'authentification, l'authentification est réussie
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      localStorage.setItem('token', JSON.stringify(response.data.token));
     } else {
       error.value = 'Identifiants incorrects';
     }

@@ -104,6 +104,7 @@ map.on('load', () => {
 
 map.on('click', (event) => {
   const coords = Object.keys(event.lngLat).map((key) => event.lngLat[key]);
+  console.log("Coordonnées : " + coords);
   const end = {
     type: 'FeatureCollection',
     features: [
