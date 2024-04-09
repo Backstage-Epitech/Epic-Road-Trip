@@ -1,16 +1,17 @@
-console.clear()
-
 const express = require("express");
+const cors = require("cors");
 const { signup, login } = require("../Controllers/userController");
 
-const router = express.Router()
+const app = express();
 
-router.get('/', (req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET");
-    res.send('hello world')
+// Utilisez cors pour gérer les autorisations CORS
+app.use(cors());
+
+app.get('/', (req, res, next) => {
+    res.send('hello world');
 });
-router.post('/signup', signup);
-router.post('/login', login);
 
-module.exports = router
+app.post('/signup', signup);
+app.post('/login', login);
+
+module.exports = app;
