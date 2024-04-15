@@ -7,7 +7,16 @@
           <div>
             <VueDatePicker v-model="date" range :enable-time-picker="false" />
           </div>
-          <v-combobox v-model="cityName" :items="filteredCities" label="City" @input="updateCityList"></v-combobox>
+          <model-list-select
+            :list="cities"
+            v-model=stringItem
+            option-value="code"
+            :custom-text="formatCity"
+            @searchchange="updateCityList"
+            @update:modelValue="stringItem"
+            placeholder="select item"
+          >
+          </model-list-select>
           <input
             type="text"
             class="search_input search_input_3 bg-white"
@@ -35,19 +44,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, reactive } from 'vue'
+import { ref, onMounted } from 'vue'
+import { ModelListSelect } from 'vue-search-select'
 import axios from 'axios'
 
 const date = ref()
-const cityName = ref('')
-const selectedCity = ref('')
-const cities = reactive<City[]>([])
+const stringItem = ref('')
+const cities = ref<City[]>([])
 
-//const cities = reactive([]);
-
+const formatCity = (city: City) => `${city.nom} - ${city.code} - ${city.departement}`
 
 interface City {
-  name: string
+  nom: string
   departement: string
   code: string
 }
@@ -59,28 +67,24 @@ onMounted(() => {
   date.value = [startDate, endDate]
 })
 
-const filteredCities = computed(() => {
-  return cities.value.filter((city) =>
-    city.name.toLowerCase().includes(cityName.value.toLowerCase())
-  )
-})
-
-const updateCityList = async () => {
+const updateCityList = async (searchText: string) => {
   try {
-    console.log('test')
+    const currentSelection = stringItem.value
     const response = await axios.get<City[]>(
-      `https://geo.api.gouv.fr/communes?nom=${cityName.value}&fields=departement&limit=7`
+      `https://geo.api.gouv.fr/communes?nom=${searchText}&fields=departement&limit=7`
     )
     cities.value = response.data.map((city) => ({
-      name: city.nom,
-      departement: city.departement,
+      nom: city.nom,
+      departement: city.departement.nom,
       code: city.code
     }))
-    console.log(cities.value)
+    stringItem.value = currentSelection
+    console.log(stringItem)
   } catch (error) {
     console.error(error)
   }
 }
+
 </script>
 
 <style scoped>
