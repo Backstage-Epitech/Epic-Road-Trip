@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { signup, login } = require("../Controllers/userController");
+const { fetchHotelsByCityFromOverpass, fetchActivityAndSportsByCityFromOverpass, fetchRestaurantAndBarByCityFromOverpass, fetchTransportFromOverpass } = require("../Controllers/tourismController");
 
 const app = express();
 
@@ -14,4 +15,52 @@ app.get('/', (req, res, next) => {
 app.post('/signup', signup);
 app.post('/login', login);
 
-module.exports = app;
+app.get('/hotels/:cityName', async (req, res) => {
+    const cityName = req.params.cityName;
+
+    try {
+        const hotels = await fetchHotelsByCityFromOverpass(cityName);
+        res.json(hotels);
+    } catch (error) {
+        console.error(`Erreur lors de la récupération des hôtels à ${cityName}:`, error);
+        res.status(500).json({ message: `Erreur lors de la récupération des hôtels à ${cityName}` });
+    }
+});
+
+app.get('/events/:cityName', async (req, res) => {
+    const cityName = req.params.cityName;
+
+    try {
+        const hotels = await fetchActivityAndSportsByCityFromOverpass(cityName);
+        res.json(hotels);
+    } catch (error) {
+        console.error(`Erreur lors de la récupération des hôtels à ${cityName}:`, error);
+        res.status(500).json({ message: `Erreur lors de la récupération des hôtels à ${cityName}` });
+    }
+});
+
+app.get('/restaurants/:cityName', async (req, res) => {
+    const cityName = req.params.cityName;
+
+    try {
+        const hotels = await fetchRestaurantAndBarByCityFromOverpass(cityName);
+        res.json(hotels);
+    } catch (error) {
+        console.error(`Erreur lors de la récupération des hôtels à ${cityName}:`, error);
+        res.status(500).json({ message: `Erreur lors de la récupération des hôtels à ${cityName}` });
+    }
+});
+
+app.get('/transports/:cityName', async (req, res) => {
+    const cityName = req.params.cityName;
+
+    try {
+        const hotels = await fetchTransportFromOverpass(cityName);
+        res.json(hotels);
+    } catch (error) {
+        console.error(`Erreur lors de la récupération des hôtels à ${cityName}:`, error);
+        res.status(500).json({ message: `Erreur lors de la récupération des hôtels à ${cityName}` });
+    }
+});
+
+module.exports = app
