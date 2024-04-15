@@ -1,20 +1,21 @@
-console.clear()
-
 const express = require("express");
+const cors = require("cors");
 const { signup, login } = require("../Controllers/userController");
 const { fetchHotelsByCityFromOverpass, fetchActivityAndSportsByCityFromOverpass, fetchRestaurantAndBarByCityFromOverpass, fetchTransportFromOverpass } = require("../Controllers/tourismController");
 
-const router = express.Router()
+const app = express();
 
-router.get('/', (req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET");
-    res.send('hello world')
+// Utilisez cors pour gérer les autorisations CORS
+app.use(cors());
+
+app.get('/', (req, res, next) => {
+    res.send('hello world');
 });
-router.post('/signup', signup);
-router.post('/login', login);
 
-router.get('/hotels/:cityName', async (req, res) => {
+app.post('/signup', signup);
+app.post('/login', login);
+
+app.get('/hotels/:cityName', async (req, res) => {
     const cityName = req.params.cityName;
 
     try {
@@ -26,7 +27,7 @@ router.get('/hotels/:cityName', async (req, res) => {
     }
 });
 
-router.get('/events/:cityName', async (req, res) => {
+app.get('/events/:cityName', async (req, res) => {
     const cityName = req.params.cityName;
 
     try {
@@ -38,7 +39,7 @@ router.get('/events/:cityName', async (req, res) => {
     }
 });
 
-router.get('/restaurants/:cityName', async (req, res) => {
+app.get('/restaurants/:cityName', async (req, res) => {
     const cityName = req.params.cityName;
 
     try {
@@ -50,7 +51,7 @@ router.get('/restaurants/:cityName', async (req, res) => {
     }
 });
 
-router.get('/transports/:cityName', async (req, res) => {
+app.get('/transports/:cityName', async (req, res) => {
     const cityName = req.params.cityName;
 
     try {
@@ -62,4 +63,4 @@ router.get('/transports/:cityName', async (req, res) => {
     }
 });
 
-module.exports = router
+module.exports = app

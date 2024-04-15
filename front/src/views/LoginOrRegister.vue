@@ -31,7 +31,7 @@ export default {
               .then(resp => {
                   localStorage.setItem('user', JSON.stringify(resp.data.user))
                   localStorage.setItem('token', JSON.stringify(resp.data.token))
-                  this.$router.push('/home')
+                  this.$router.push('/')
                 }
               )
           }
@@ -112,7 +112,7 @@ export default {
 </script>
 
 <template>
-  <div class="d-flex flex-column justify-content-center align-items-center">
+  <div class="d-flex flex-column justify-content-center align-items-center mt-5">
     <div class="d-flex flex-row justify-content-center align-items-center pb-4">
       <h2>{{ currentEndpoint != 'login' ? 'Register' : 'Login' }}</h2>
     </div>
@@ -134,7 +134,7 @@ export default {
             </button>
           </div>
 
-          <RouterLink class="dynamicLink" v-bind:to="currentEndpoint != 'login' ? '/' : '/register'">
+          <RouterLink class="dynamicLink" v-bind:to="currentEndpoint != 'login' ? '/login' : '/register'">
             {{ currentEndpoint != 'login' ? 'Se connecter' : 'Créer un compte' }}
           </RouterLink>
         </div>
@@ -161,7 +161,7 @@ export default {
         <div class="d-flex flex-column align-items-center justify-content-center">
           <button class="sendButton mb-4" type="submit">Register</button>
 
-          <RouterLink class="dynamicLink" v-bind:to="currentEndpoint != 'login' ? '/' : '/register'">
+          <RouterLink class="dynamicLink" v-bind:to="currentEndpoint != 'login' ? '/login' : '/register'">
             {{ currentEndpoint != 'login' ? 'Ou se connecter' : 'Créer un compte' }}
           </RouterLink>
         </div>

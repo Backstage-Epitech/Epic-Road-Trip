@@ -1,30 +1,43 @@
-<script setup lang="ts">
+<script lang="ts">
+import router from '@/router';
 import ServiceBoxComponent from '../components/ServiceBoxComponent.vue'
-import axios from 'redaxios';
+import axios from 'axios';
 import { ref } from 'vue';
+import EventBus from '../components/EventBus.js'
 
 const email = ref('');
 const password = ref('');
 const error = ref('');
 
-async function loginUser() {
-  const formData = {
-    email: email.value,
-    password: password.value
-  };
-
-  try {
-    const response = await axios.post('http://localhost:8081/login', formData);
-    console.log(response); // Affiche la réponse dans la console
-
-    if (response.data.token) {
-      alert('Vous êtes connecté'); // Si la réponse contient un jeton d'authentification, l'authentification est réussie
-    } else {
-      error.value = 'Identifiants incorrects';
+export default {
+  data() {
+    return {
+      formData: {
+        email: email.value,
+        password: password.value
+      }
     }
-  } catch (error) {
-    console.error('Une erreur s\'est produite lors de la connexion :', error);
-    error.value = 'Une erreur s\'est produite lors de la connexion';
+  },
+  methods: {
+    async loginUser() {
+      try {
+        const response = await axios.post('http://localhost:8081/login', this.formData);
+        console.log(response); // Affiche la réponse dans la console
+
+        if (response.data.token) {
+          // Si la réponse contient un jeton d'authentification, l'authentification est réussie
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+          localStorage.setItem('token', JSON.stringify(response.data.token));
+          //this.emitter.emit("EVENT_USER_DATA_CHANGE", { msg: JSON.stringify(response.data.user) });
+          EventBus.emit("EVENT_USER_LOGIN", { msg: JSON.stringify(response.data.user) });
+          router.push('/');
+        } else {
+          error.value = 'Identifiants incorrects';
+        }
+      } catch (error) {
+        console.error('Une erreur s\'est produite lors de la connexion :', 401);
+      }
+    }
   }
 }
 </script>
@@ -39,11 +52,14 @@ async function loginUser() {
       <v-col class="my-12 mx-auto">
         <v-sheet class="mx-auto" max-width="300">
           <h3 class="mb-6 text-center font-weight-bold">Se connecter</h3>
+          <RouterLink v-bind:to="'/register'">
+            Ou cliquez ici pour créer un compte
+          </RouterLink>
           <v-divider></v-divider>
 
           <v-form @submit.prevent="loginUser">
             <v-text-field
-              v-model="email"
+              v-model="formData.email"
               label="Email"
               type="email"
               required
@@ -52,7 +68,7 @@ async function loginUser() {
               clearable
             ></v-text-field>
             <v-text-field
-              v-model="password"
+              v-model="formData.password"
               label="password"
               type="password"
               required
@@ -71,7 +87,6 @@ async function loginUser() {
               </v-row>
             </v-container>
             <v-btn class="mt-2" text="Se connecter" type="submit" block></v-btn>
-            <p v-if="error" class="error">{{ error }}</p>
           </v-form>
         </v-sheet>
       </v-col>

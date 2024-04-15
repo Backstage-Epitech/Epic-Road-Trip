@@ -10,6 +10,8 @@ const User = db.user;
 // Hachage du mot de passe avant de le sauvegarder dans la base de données avec bcrypt
 const signup = async (req, res) => {
     try {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+
         const { userName, email, password, role, image } = req.body;
         const data = {
             userName,
@@ -49,6 +51,7 @@ const signup = async (req, res) => {
 // Authentification de l'utilisateur
 const login = async (req, res) => {
     try {
+        res.setHeader("Access-Control-Allow-Origin", "*");
         const { email, password } = req.body;
 
         // Recherche de l'utilisateur par son email
@@ -99,6 +102,8 @@ const verifyToken = (req, res, next) => {
     }
 
     try {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+
         // Vérifier le token
         const decoded = jwt.verify(token, process.env.secretKey);
         console.log('Decoded token:', decoded);
@@ -126,7 +131,7 @@ const getUser = async (req, res) => {
             id: userId
         }
     });
-
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.status(200).json({ user });
 
 }
@@ -135,6 +140,7 @@ const editUser = async (req, res) => {
     const userId = req.params.id;
 
     try {
+        res.setHeader("Access-Control-Allow-Origin", "*");
         const { email, password, role, image, interest } = req.body;
 
         // Recherche de l'utilisateur par son email

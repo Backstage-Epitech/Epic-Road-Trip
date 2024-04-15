@@ -19,8 +19,10 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^8.3.1",
+    "axios": "^1.6.8",
     "jquery": "^3.7.1",
     "mapbox-gl": "^3.2.0",
+    "mitt": "^3.0.1",
     "redaxios": "^0.5.1",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5",
