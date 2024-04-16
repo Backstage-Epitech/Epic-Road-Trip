@@ -53,7 +53,7 @@
   </v-card>
 </template>
 <script setup lang="ts">
-import Map from './Map.vue'
+import MapItinerary from './MapItinerary.vue'
 import { ref } from 'vue'
 
   const tab = ref(null)

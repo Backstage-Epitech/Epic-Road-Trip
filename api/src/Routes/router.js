@@ -34,8 +34,8 @@ app.get('/events/:cityName', async (req, res) => {
         const hotels = await fetchActivityAndSportsByCityFromOverpass(cityName);
         res.json(hotels);
     } catch (error) {
-        console.error(`Erreur lors de la récupération des hôtels à ${cityName}:`, error);
-        res.status(500).json({ message: `Erreur lors de la récupération des hôtels à ${cityName}` });
+        console.error(`Erreur lors de la récupération des évènements à ${cityName}:`, error);
+        res.status(500).json({ message: `Erreur lors de la récupération des évènements à ${cityName}` });
     }
 });
 
@@ -46,8 +46,8 @@ app.get('/restaurants/:cityName', async (req, res) => {
         const hotels = await fetchRestaurantAndBarByCityFromOverpass(cityName);
         res.json(hotels);
     } catch (error) {
-        console.error(`Erreur lors de la récupération des hôtels à ${cityName}:`, error);
-        res.status(500).json({ message: `Erreur lors de la récupération des hôtels à ${cityName}` });
+        console.error(`Erreur lors de la récupération des restaurants à ${cityName}:`, error);
+        res.status(500).json({ message: `Erreur lors de la récupération des restaurants à ${cityName}` });
     }
 });
 
@@ -58,8 +58,8 @@ app.get('/transports/:cityName', async (req, res) => {
         const hotels = await fetchTransportFromOverpass(cityName);
         res.json(hotels);
     } catch (error) {
-        console.error(`Erreur lors de la récupération des hôtels à ${cityName}:`, error);
-        res.status(500).json({ message: `Erreur lors de la récupération des hôtels à ${cityName}` });
+        console.error(`Erreur lors de la récupération des transports à ${cityName}:`, error);
+        res.status(500).json({ message: `Erreur lors de la récupération des transports à ${cityName}` });
     }
 });
 

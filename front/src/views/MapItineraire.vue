@@ -1,11 +1,15 @@
 <template>
+  <div>
+    <button @click="captureScreenshot" id="btnScreenshot" type="button" class="btn btn-primary">Télécharger le pdf</button>
+  </div>
   <div id="layout">
     <div ref="mapContainer" id="mapContainer" class="map-container"></div>
   </div>
-  <button @click="captureScreenshot">Télécharger le pdf</button>
 </template>
 
-<script setupt lang="ts">
+<script>
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import mapboxgl from "mapbox-gl";
 mapboxgl.accessToken = "pk.eyJ1IjoibWNoYXVtb250IiwiYSI6ImNsdHd6d2x2NzAxMmYycW12dnh1MnhkanUifQ.h8wQjPrzjaEbZmBWH2yBkg";
 
@@ -99,7 +103,7 @@ export default {
   height: 90vh;
 }
 
-mapboxgl-canvas {
-    width: 1500px !important   ;
-} 
+#btnScreenshot {
+  margin: 10px;
+}
 </style>

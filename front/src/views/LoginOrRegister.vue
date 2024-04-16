@@ -1,5 +1,7 @@
 <script>
-import axios from 'redaxios';
+import ServiceBoxComponent from '../components/ServiceBoxComponent.vue';
+import EventBus from '../components/EventBus.js';
+import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:8081';
 
 export default {
@@ -25,12 +27,14 @@ export default {
           if (endpoint === 'login'){
             localStorage.setItem('user', JSON.stringify(resp.data.user))
             localStorage.setItem('token', JSON.stringify(resp.data.token))
+            EventBus.emit("EVENT_USER_LOGIN", { msg: JSON.stringify(resp.data.user) });
             this.$router.push('/')
           } else if (endpoint === 'signup') {
             axios.post('/api/login', {email: this.registerForm.email, password: this.registerForm.password})
               .then(resp => {
                   localStorage.setItem('user', JSON.stringify(resp.data.user))
                   localStorage.setItem('token', JSON.stringify(resp.data.token))
+                  EventBus.emit("EVENT_USER_LOGIN", { msg: JSON.stringify(resp.data.user) });
                   this.$router.push('/')
                 }
               )
@@ -112,62 +116,68 @@ export default {
 </script>
 
 <template>
-  <div class="d-flex flex-column justify-content-center align-items-center mt-5">
-    <div class="d-flex flex-row justify-content-center align-items-center pb-4">
-      <h2>{{ currentEndpoint != 'login' ? 'Register' : 'Login' }}</h2>
-    </div>
+  <ServiceBoxComponent />
 
-    <form :class="{ 'd-none': currentEndpoint != 'login' }" @submit.prevent="loginOrRegister('login')">
-      <div class="d-flex flex-column justify-content-center">
-        <label>Email</label>
-        <input v-model="loginForm.email" placeholder="email" />
-        <label>Mot de passe</label>
-        <input v-model="loginForm.password" placeholder="password" />
+  <v-container class="ma-9 mx-auto">
+    <v-row>
+      <v-col class="v-col-7 img-fond"> </v-col>
+      <v-col class="mx-auto">
+        <v-sheet class="mx-auto" max-width="300">
+          <div class="d-flex flex-column justify-content-center align-items-center">
+            <div class="d-flex flex-row justify-content-center align-items-center pb-4">
+              <h2>{{ currentEndpoint != 'login' ? 'Register' : 'Login' }}</h2>
+            </div>
 
-        <div class="d-flex flex-column align-items-center justify-content-center">
-          <div class="d-flex align-items-center justify-content-center">
-            <button class="sendButton" type="submit">Login</button>
-            <span class="separatingSpan">or</span>
-            <button @click="anonymousRedirectHome()" id="anonymousLoginButton">
-              <img src="../assets/images/anonymous-user.png">
-              Anonymous
-            </button>
+            <form :class="{ 'd-none': currentEndpoint != 'login' }" @submit.prevent="loginOrRegister('login')">
+              <div class="d-flex flex-column justify-content-center">
+                <label>Email</label>
+                <input v-model="loginForm.email" placeholder="email" />
+                <label>Mot de passe</label>
+                <input v-model="loginForm.password" placeholder="password" />
+
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                  <div class="d-flex align-items-center justify-content-center">
+                    <button class="sendButton" type="submit">Login</button>
+                    <span class="separatingSpan">or</span>
+                    <button @click="anonymousRedirectHome()" id="anonymousLoginButton">
+                      <img src="../assets/images/anonymous-user.png">
+                      Anonymous
+                    </button>
+                  </div>
+
+                  <RouterLink class="dynamicLink" v-bind:to="currentEndpoint != 'login' ? '/login' : '/register'">
+                    {{ currentEndpoint != 'login' ? 'Se connecter' : 'Créer un compte' }}
+                  </RouterLink>
+                </div>
+              </div>
+            </form>
+
+            <form :class="{ 'd-none': currentEndpoint == 'login' }" @submit.prevent="loginOrRegister('signup')">
+              <div class="d-flex flex-column justify-content-center">
+                <label>Username</label>
+                <input v-model="registerForm.userName" placeholder="username" />
+                <label>Email</label>
+                <input v-model="registerForm.email" placeholder="email" />
+                <label>Password</label>
+                <input v-model="registerForm.password" placeholder="password" />
+
+                <label>Profile picture</label>
+                <input type="file" @change="handleImageChange"/>
+
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                  <button class="sendButton mb-4" type="submit">Register</button>
+
+                  <RouterLink class="dynamicLink" v-bind:to="currentEndpoint != 'login' ? '/login' : '/register'">
+                    {{ currentEndpoint != 'login' ? 'Ou se connecter' : 'Créer un compte' }}
+                  </RouterLink>
+                </div>
+              </div>
+            </form>
           </div>
-
-          <RouterLink class="dynamicLink" v-bind:to="currentEndpoint != 'login' ? '/login' : '/register'">
-            {{ currentEndpoint != 'login' ? 'Se connecter' : 'Créer un compte' }}
-          </RouterLink>
-        </div>
-      </div>
-    </form>
-
-    <form :class="{ 'd-none': currentEndpoint == 'login' }" @submit.prevent="loginOrRegister('signup')">
-      <div class="d-flex flex-column justify-content-center">
-        <label>Username</label>
-        <input v-model="registerForm.userName" placeholder="username" />
-        <label>Email</label>
-        <input v-model="registerForm.email" placeholder="email" />
-        <label>Password</label>
-        <input v-model="registerForm.password" placeholder="password" />
-        <label>Role</label>
-        <select v-model="registerForm.role">
-          <option value="User">User</option>
-          <option value="Admin">Admin</option>
-        </select>
-
-        <label>Profile picture</label>
-        <input type="file" @change="handleImageChange"/>
-
-        <div class="d-flex flex-column align-items-center justify-content-center">
-          <button class="sendButton mb-4" type="submit">Register</button>
-
-          <RouterLink class="dynamicLink" v-bind:to="currentEndpoint != 'login' ? '/login' : '/register'">
-            {{ currentEndpoint != 'login' ? 'Ou se connecter' : 'Créer un compte' }}
-          </RouterLink>
-        </div>
-      </div>
-    </form>
-  </div>
+        </v-sheet>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <style>
@@ -202,5 +212,15 @@ export default {
 
 .sendButton:hover {
   background-color: #353936;
+}
+
+.img-fond {
+  background-image: url('../assets/images/img-fond.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.error {
+  color: red;
 }
 </style>

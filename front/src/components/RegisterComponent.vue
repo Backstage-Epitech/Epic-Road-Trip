@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import router from '@/router'
-import axios from 'redaxios'
+import router from '@/router';
+import axios from 'axios'
 import { ref } from 'vue'
+import EventBus from './EventBus.js'
+
 
 axios.defaults.baseURL = 'http://localhost:8081'
 
@@ -23,7 +25,7 @@ const register = async () => {
     email: email.value,
     password: password.value,
     userName: userName.value,
-    role: 'user',
+    role: 'User',
     image: image.value
   }
   await axios
@@ -32,6 +34,7 @@ const register = async () => {
       axios.post('/api/login', { email: email.value, password: password.value }).then((resp) => {
         localStorage.setItem('user', JSON.stringify(resp.data.user))
         localStorage.setItem('token', JSON.stringify(resp.data.token))
+        EventBus.emit('EVENT_USER_LOGIN', { msg: JSON.stringify(resp.data.user) })
         router.push('/')
       })
     })

@@ -4,6 +4,7 @@
 import router from '@/router'
 import axios from 'axios'
 import { ref } from 'vue'
+import EventBus from './EventBus.js'
 
 const email = ref('')
 const password = ref('')
@@ -24,7 +25,7 @@ const loginUser = async () => {
       // Si la réponse contient un jeton d'authentification, l'authentification est réussie
       localStorage.setItem('user', JSON.stringify(response.data.user))
       localStorage.setItem('token', JSON.stringify(response.data.token))
-      //EventBus.emit('EVENT_USER_LOGIN', { msg: JSON.stringify(response.data.user) })
+      EventBus.emit('EVENT_USER_LOGIN', { msg: JSON.stringify(response.data.user) })
       router.push('/')
     } else {
       errorMessage.value = 'Identifiants incorrects'
