@@ -45,3 +45,22 @@ describe('Get Evenements', () => {
             .expect(200);
     },);
 });
+
+describe('Add to Favorite', () => {
+    it('devrait ajouter un favori avec succès', async () => {
+        const userId = 1;
+        const id = 12345;
+        const response = request(app)
+            .post(`/favorite/${id}/${userId}`)
+            .expect(201);
+    });
+});
+
+describe('Get Favorite List', () => {
+    it('devrait retourner la liste des favoris pour un utilisateur donné', async () => {
+        const userId = 1;
+        const response = request(app)
+            .get(`/favorite/${userId}`)
+            .expect(200);
+    });
+});

@@ -1,6 +1,9 @@
 const axios = require('axios')
 const db = require("../../models/index");
+const favorite = require('../../models/favorite');
 const History = db.history;
+const Favorite = db.favorite;
+
 
 
 async function fetchHotelsByCityFromOverpass(cityName) {
@@ -136,17 +139,14 @@ const AddtoHistory = async (req, res) => {
 
 const getHistoryList = async (req, res) => {
     try {
-        // Recherchez dans la base de données les entrées d'historique pour l'utilisateur donné
         const historyList = await History.findAll({
             where: {
                 user_id: req.params.id
             }
         })
 
-        // Renvoyez la liste d'entrées d'historique sous forme de réponse JSON
         res.status(200).json({ historyList });
     } catch (error) {
-        // Gérez les erreurs
         console.error('Erreur lors de la récupération de l\'historique :', error);
         res.status(500).json({ message: 'Erreur lors de la récupération de l\'historique' });
     }
@@ -154,11 +154,37 @@ const getHistoryList = async (req, res) => {
 
 
 
+const addToFavorite = async (req, res) => {
+    try {
+        const favorite = await Favorite.create({ favorite: req.params.id, user_id: req.params.userId })
+        res.status(201).json({ message: "Favoris créé avec succès", favorite });
+    } catch (error) {
+        console.error("Erreur lors de la création du Favoris :", error);
+        res.status(500).json({ error: "Erreur lors de la création du Favoris" });
+    }
+}
+
+const getFavoriteList = async (req, res) => {
+    try {
+        const favoriteList = await Favorite.findAll({
+            where: {
+                user_id: req.params.id
+            }
+        })
+
+        res.status(200).json({ favoriteList });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des favoris :', error);
+        res.status(500).json({ message: 'Erreur lors de la récupération des favoris' });
+    }
+};
 module.exports = {
     fetchHotelsByCityFromOverpass,
     fetchActivityAndSportsByCityFromOverpass,
     fetchRestaurantAndBarByCityFromOverpass,
     fetchTransportFromOverpass,
     AddtoHistory,
-    getHistoryList
+    getHistoryList,
+    addToFavorite,
+    getFavoriteList
 };

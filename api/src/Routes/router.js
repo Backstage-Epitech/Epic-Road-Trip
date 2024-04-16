@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { signup, login } = require("../Controllers/userController");
-const { fetchHotelsByCityFromOverpass, fetchActivityAndSportsByCityFromOverpass, fetchRestaurantAndBarByCityFromOverpass, fetchTransportFromOverpass, AddtoHistory, getHistoryList } = require("../Controllers/tourismController");
+const { fetchHotelsByCityFromOverpass, fetchActivityAndSportsByCityFromOverpass, fetchRestaurantAndBarByCityFromOverpass, fetchTransportFromOverpass, AddtoHistory, getHistoryList, addToFavorite, getFavoriteList } = require("../Controllers/tourismController");
 
 const app = express();
 
@@ -67,6 +67,9 @@ app.post('/history/:id', AddtoHistory)
 
 app.get('/history/:id', getHistoryList)
 
+app.post('/favorite/:id/:userId', addToFavorite)
+
+app.get('/favorite/:id', getFavoriteList)
 
 
 module.exports = app
