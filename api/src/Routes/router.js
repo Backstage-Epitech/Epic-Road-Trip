@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { signup, login } = require("../Controllers/userController");
-const { fetchHotelsByCityFromOverpass, fetchActivityAndSportsByCityFromOverpass, fetchRestaurantAndBarByCityFromOverpass, fetchTransportFromOverpass } = require("../Controllers/tourismController");
+const { fetchHotelsByCityFromOverpass, fetchActivityAndSportsByCityFromOverpass, fetchRestaurantAndBarByCityFromOverpass, fetchTransportFromOverpass, AddtoHistory, getHistoryList } = require("../Controllers/tourismController");
 
 const app = express();
 
@@ -62,5 +62,11 @@ app.get('/transports/:cityName', async (req, res) => {
         res.status(500).json({ message: `Erreur lors de la récupération des hôtels à ${cityName}` });
     }
 });
+
+app.post('/history/:id', AddtoHistory)
+
+app.get('/history/:id', getHistoryList)
+
+
 
 module.exports = app

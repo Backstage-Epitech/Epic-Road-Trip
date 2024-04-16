@@ -1,4 +1,6 @@
 const axios = require('axios')
+const db = require("../../models/index");
+const History = db.history;
 
 
 async function fetchHotelsByCityFromOverpass(cityName) {
@@ -10,7 +12,7 @@ async function fetchHotelsByCityFromOverpass(cityName) {
                            out skel qt;`;
 
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
-    
+
     try {
         const response = await axios.post(overpassUrl, overpassQuery, {
             headers: {
@@ -43,7 +45,7 @@ async function fetchActivityAndSportsByCityFromOverpass(cityName) {
                             out skel qt;`;
 
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
-    
+
     try {
         const response = await axios.post(overpassUrl, overpassQuery, {
             headers: {
@@ -74,7 +76,7 @@ async function fetchTransportFromOverpass(cityName) {
     out skel qt;`;
 
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
-    
+
     try {
         const response = await axios.post(overpassUrl, overpassQuery, {
             headers: {
@@ -107,7 +109,7 @@ async function fetchRestaurantAndBarByCityFromOverpass(cityName) {
                             out skel qt;`;
 
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
-    
+
     try {
         const response = await axios.post(overpassUrl, overpassQuery, {
             headers: {
@@ -121,10 +123,42 @@ async function fetchRestaurantAndBarByCityFromOverpass(cityName) {
         throw error;
     }
 }
+const AddtoHistory = async (req, res) => {
+    const { url } = req.body;
+    try {
+        const history = await History.create({ keyword: url, user_id: req.params.id });
+        res.status(201).json({ message: "Historique créé avec succès", history });
+    } catch (error) {
+        console.error("Erreur lors de la création de l'historique :", error);
+        res.status(500).json({ error: "Erreur lors de la création de l'historique" });
+    }
+}
+
+const getHistoryList = async (req, res) => {
+    try {
+        // Recherchez dans la base de données les entrées d'historique pour l'utilisateur donné
+        const historyList = await History.findAll({
+            where: {
+                user_id: req.params.id
+            }
+        })
+
+        // Renvoyez la liste d'entrées d'historique sous forme de réponse JSON
+        res.status(200).json({ historyList });
+    } catch (error) {
+        // Gérez les erreurs
+        console.error('Erreur lors de la récupération de l\'historique :', error);
+        res.status(500).json({ message: 'Erreur lors de la récupération de l\'historique' });
+    }
+};
+
+
 
 module.exports = {
     fetchHotelsByCityFromOverpass,
     fetchActivityAndSportsByCityFromOverpass,
     fetchRestaurantAndBarByCityFromOverpass,
-    fetchTransportFromOverpass
+    fetchTransportFromOverpass,
+    AddtoHistory,
+    getHistoryList
 };
