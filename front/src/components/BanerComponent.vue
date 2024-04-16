@@ -1,10 +1,11 @@
+<script setup lang="ts"></script>
+
 <template>
-<div class="myBox"></div>
+  <div class="myBox"></div>
 </template>
-<script setup lang="ts">
-</script>
+
 <style scoped>
-   .myBox {
-        background-position: 50% 40%;
-   } 
+.myBox {
+  background-position: 50% 40%;
+}
 </style>

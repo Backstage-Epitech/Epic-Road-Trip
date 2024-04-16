@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import BanerComponent from '../components/BanerComponent.vue'
-  import App from '../components/AppParcoursComponent.vue'
+  import AppParcoursComponent from '../components/AppParcoursComponent.vue'
 </script>
 
 <template>
   <BanerComponent />
-  <App />
+  <AppParcoursComponent />
 </template>
 
 <style scoped></style>

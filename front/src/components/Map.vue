@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script>
+<script setupt lang="ts">
 import mapboxgl from "mapbox-gl";
 mapboxgl.accessToken = "pk.eyJ1IjoibWNoYXVtb250IiwiYSI6ImNsdHd6d2x2NzAxMmYycW12dnh1MnhkanUifQ.h8wQjPrzjaEbZmBWH2yBkg";
 
@@ -51,4 +51,8 @@ export default {
   position: relative;
   height: 80vh;
 }
+
+mapboxgl-canvas {
+    width: 1500px !important   ;
+} 
 </style>

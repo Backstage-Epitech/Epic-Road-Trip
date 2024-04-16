@@ -2,11 +2,11 @@
   <div class="myBox">
     <p class="slogan bona-nova-regular-italic">Explorez le monde, sans casser votre tirelire.</p>
     <v-card class="u-about">
-      <div class="d-flex blue-lagon">
+      <div class="d-flex blue-lagon mt-3">
         <div class="card-desc">
           <span class="material-symbols-outlined mx-3"> explore </span>
           <div>
-            <p class="font-weight-bold text-decoration-underline">
+            <p class="font-weight-bold text-decoration-underline service-title">
               {{ 'Découverte' }}
             </p>
             <p class="text-medium-emphasis text-caption">
@@ -17,7 +17,7 @@
         <div class="card-desc">
           <span class="material-symbols-outlined mx-3"> trip </span>
           <div>
-            <p class="font-weight-bold text-decoration-underline">{{ 'Personnalisation' }}</p>
+            <p class="font-weight-bold text-decoration-underline service-title">{{ 'Personnalisation' }}</p>
             <p class="text-medium-emphasis text-caption">
               {{ 'Créez des itinéraires adaptés à vos besoins.' }}
             </p>
@@ -26,7 +26,7 @@
         <div class="card-desc">
           <span class="material-symbols-outlined mx-3"> savings </span>
           <div>
-            <p class="font-weight-bold text-decoration-underline">{{ 'Budget' }}</p>
+            <p class="font-weight-bold text-decoration-underline service-title">{{ 'Budget' }}</p>
             <p class="text-medium-emphasis text-caption">
               {{ 'Organisez votre voyage en fonction de votre budget.' }}
             </p>
@@ -35,7 +35,7 @@
         <div class="card-desc">
           <span class="material-symbols-outlined mx-3"> diversity_1 </span>
           <div>
-            <p class="font-weight-bold text-decoration-underline">{{ 'Partage' }}</p>
+            <p class="font-weight-bold text-decoration-underline service-title">{{ 'Partage' }}</p>
             <p class="text-medium-emphasis text-caption">
               {{ 'Partagez vos aventures avec vos proches.' }}
             </p>
@@ -58,5 +58,8 @@
 }
 .myBox {
   background-position: 40%;
+}
+.service-title {
+  font-family: 'Oswald', sans-serif;
 }
 </style>

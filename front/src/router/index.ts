@@ -1,5 +1,6 @@
 import HomeView from '@/views/HomeView.vue'
 import PlanificationView from '@/views/PlanificationView.vue'
+import LoginOrRegister from '@/views/LoginOrRegister.vue'
 
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -10,20 +11,16 @@ const router = createRouter({
     {
       path: '/register',
       name: 'register',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/LoginOrRegister.vue')
-    },
-    {
-      path: '/map',
-      name: 'map',
-      component: import('../views/Map.vue')
+      component: LoginOrRegister
     },
     {
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue')
+    },{
+      path: '/',
+      name: 'home',
+      component: HomeView
     },
     {
       path: '/planification',
