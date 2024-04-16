@@ -9,8 +9,8 @@
 
     <v-card-text>
       <v-window v-model="tab">
-        <v-window-item value="one"> 
-          <Map />  
+        <v-window-item value="one" id="tabOne"> 
+          <MapItinerary />  
         </v-window-item>
 
         <v-window-item value="two">
@@ -53,11 +53,14 @@
   </v-card>
 </template>
 <script setup lang="ts">
-import MapItinerary from './MapItinerary.vue'
+import MapItinerary from '../views/MapItinerary.vue'
 import { ref } from 'vue'
 
   const tab = ref(null)
 </script>
 <style scoped>
-
+#tabOne {
+  height: 100%; 
+  width: 100%;
+}
 </style>

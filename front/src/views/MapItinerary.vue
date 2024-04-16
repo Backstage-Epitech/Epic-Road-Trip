@@ -31,6 +31,10 @@ export default {
     );
 
     this.map = map;
+
+    this.map.once(`load`, (event) => {
+      this.map.resize();
+    });
   },
   unmounted() {
   this.map.remove();
@@ -86,8 +90,11 @@ export default {
 
 <style>
 .map-container {
-  flex: 1;
-  height: 100%;
+  display: block;
+  position: absolute; 
+  top: 0;
+  bottom: 0;
+  width: 100%;
 }
 
 .mapboxgl-control-container {
