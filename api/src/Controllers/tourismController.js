@@ -3,20 +3,22 @@ const db = require("../../models/index");
 const favorite = require('../../models/favorite');
 const History = db.history;
 const Favorite = db.favorite;
+const Trajet = db.trajet;
+
 
 async function fetchHotelsByCityFromOverpass(cityName, searchTerm = null) {
     let overpassQuery = `[out:json][timeout:25];
                            area["name"="${cityName}"]->.boundaryarea;
                            node["tourism"="hotel"](area.boundaryarea);
-                           out body;
-                           >;
-                           out skel qt;`;
+                        `;
 
     // Ajouter la recherche si le terme de recherche n'est pas nul
     if (searchTerm !== null) {
         overpassQuery += `node(area.boundaryarea)["name"~"${searchTerm}"];`;
     }
-
+    overpassQuery += `out body;
+    >;
+    out skel qt;`;
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
 
     try {
@@ -44,17 +46,15 @@ async function fetchActivityAndSportsByCityFromOverpass(cityName, searchTerm = n
                             node["leisure"="sports_centre"](area.searchArea);
                             node["leisure"="stadium"](area.searchArea);
                             node["leisure"="swimming_pool"](area.searchArea);
-                            );
-                            
-                            out body;
-                            >;
-                            out skel qt;`;
+                            );`;
 
     // Ajouter la recherche si le terme de recherche n'est pas nul
     if (searchTerm !== null) {
         overpassQuery += `node(area.searchArea)["name"~"${searchTerm}"];`;
     }
-
+    overpassQuery += `out body;
+    >;
+    out skel qt;`;
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
 
     try {
@@ -80,17 +80,15 @@ async function fetchTransportFromOverpass(cityName, searchTerm = null) {
       node(area.searchArea)["amenity"="train_station"];
       node(area.searchArea)["amenity"="subway_station"];
       node(area.searchArea)["amenity"="tram_station"];
-    );
-    
-    out body;
-    >;
-    out skel qt;`;
+    );`;
 
     // Ajouter la recherche si le terme de recherche n'est pas nul
     if (searchTerm !== null) {
         overpassQuery += `node(area.searchArea)["name"~"${searchTerm}"];`;
     }
-
+    overpassQuery += `out body;
+    >;
+    out skel qt;`;
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
 
     try {
@@ -118,17 +116,15 @@ async function fetchRestaurantAndBarByCityFromOverpass(cityName, searchTerm = nu
                               
                                 // Recherche des bars
                                 node(area.searchArea)["amenity"="bar"];
-                            );
-                            
-                            out body;
-                            >;
-                            out skel qt;`;
+                            );`;
 
     // Ajouter la recherche si le terme de recherche n'est pas nul
     if (searchTerm !== null) {
         overpassQuery += `node(area.searchArea)["name"~"${searchTerm}"];`;
     }
-
+    overpassQuery += `out body;
+    >;
+    out skel qt;`;
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
 
     try {
@@ -196,6 +192,35 @@ const getFavoriteList = async (req, res) => {
     }
 };
 
+const AjouterUnTrajet = async (req, res) => {
+    const { depart, arrive } = req.body;
+    try {
+        const trajet = await Trajet.create({ depart: depart, arrive: arrive, user_id: req.params.id });
+        res.status(201).json({ message: "Trajet créé avec succès", trajet });
+    } catch (error) {
+        console.error("Erreur lors de la création du trajet :", error);
+        res.status(500).json({ error: "Erreur lors de la création du trajet" });
+    }
+}
+
+const getListTrajet = async (req, res) => {
+    try {
+        const trajetList = await Trajet.findAll({
+            where: {
+                user_id: req.params.id
+            }
+        })
+
+        res.status(200).json({ trajetList });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des Trajets :', error);
+        res.status(500).json({ message: 'Erreur lors de la récupération des trajets' });
+    }
+};
+
+
+
+
 module.exports = {
     fetchHotelsByCityFromOverpass,
     fetchActivityAndSportsByCityFromOverpass,
@@ -204,5 +229,7 @@ module.exports = {
     AddtoHistory,
     getHistoryList,
     addToFavorite,
-    getFavoriteList
+    getFavoriteList,
+    AjouterUnTrajet,
+    getListTrajet
 };

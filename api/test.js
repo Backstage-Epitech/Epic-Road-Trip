@@ -64,3 +64,23 @@ describe('Get Favorite List', () => {
             .expect(200);
     });
 });
+
+describe('Ajouter un trajet', () => {
+    it('devrait ajouter un trajet avec succès', async () => {
+        const userId = '1';
+        const requestBody = { depart: 'Lieu de départ', arrive: 'Lieu d\'arrivée' };
+        const response = await request(app)
+            .post(`/trajet/${userId}`)
+            .send(requestBody)
+            .expect(201);
+    });
+});
+
+describe('Obtenir la liste des trajets', () => {
+    it('devrait retourner la liste des trajets pour un utilisateur donné', async () => {
+        const userId = '1';
+        const response = await request(app)
+            .get(`/trajet/${userId}`)
+            .expect(200);
+    });
+});
