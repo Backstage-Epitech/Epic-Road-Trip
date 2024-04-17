@@ -1,18 +1,21 @@
-const axios = require('axios')
+const axios = require('axios');
 const db = require("../../models/index");
 const favorite = require('../../models/favorite');
 const History = db.history;
 const Favorite = db.favorite;
 
-
-
-async function fetchHotelsByCityFromOverpass(cityName) {
-    const overpassQuery = `[out:json][timeout:25];
+async function fetchHotelsByCityFromOverpass(cityName, searchTerm = null) {
+    let overpassQuery = `[out:json][timeout:25];
                            area["name"="${cityName}"]->.boundaryarea;
                            node["tourism"="hotel"](area.boundaryarea);
                            out body;
                            >;
                            out skel qt;`;
+
+    // Ajouter la recherche si le terme de recherche n'est pas nul
+    if (searchTerm !== null) {
+        overpassQuery += `node(area.boundaryarea)["name"~"${searchTerm}"];`;
+    }
 
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
 
@@ -30,8 +33,8 @@ async function fetchHotelsByCityFromOverpass(cityName) {
     }
 }
 
-async function fetchActivityAndSportsByCityFromOverpass(cityName) {
-    const overpassQuery = `[out:json][timeout:25];
+async function fetchActivityAndSportsByCityFromOverpass(cityName, searchTerm = null) {
+    let overpassQuery = `[out:json][timeout:25];
                             area[name="${cityName}"]->.searchArea;
                             (
                             node["tourism"="museum"](area.searchArea);
@@ -46,6 +49,11 @@ async function fetchActivityAndSportsByCityFromOverpass(cityName) {
                             out body;
                             >;
                             out skel qt;`;
+
+    // Ajouter la recherche si le terme de recherche n'est pas nul
+    if (searchTerm !== null) {
+        overpassQuery += `node(area.searchArea)["name"~"${searchTerm}"];`;
+    }
 
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
 
@@ -63,8 +71,8 @@ async function fetchActivityAndSportsByCityFromOverpass(cityName) {
     }
 }
 
-async function fetchTransportFromOverpass(cityName) {
-    const overpassQuery = `[out:json][timeout:25];
+async function fetchTransportFromOverpass(cityName, searchTerm = null) {
+    let overpassQuery = `[out:json][timeout:25];
     area[name="${cityName}"]->.searchArea;
     (
       node(area.searchArea)["amenity"="bus_station"];
@@ -77,6 +85,11 @@ async function fetchTransportFromOverpass(cityName) {
     out body;
     >;
     out skel qt;`;
+
+    // Ajouter la recherche si le terme de recherche n'est pas nul
+    if (searchTerm !== null) {
+        overpassQuery += `node(area.searchArea)["name"~"${searchTerm}"];`;
+    }
 
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
 
@@ -94,8 +107,8 @@ async function fetchTransportFromOverpass(cityName) {
     }
 }
 
-async function fetchRestaurantAndBarByCityFromOverpass(cityName) {
-    const overpassQuery = `[out:json][timeout:25];
+async function fetchRestaurantAndBarByCityFromOverpass(cityName, searchTerm = null) {
+    let overpassQuery = `[out:json][timeout:25];
                             area[name="${cityName}"]->.searchArea;
                             (
                                 // Recherche des restaurants
@@ -110,6 +123,11 @@ async function fetchRestaurantAndBarByCityFromOverpass(cityName) {
                             out body;
                             >;
                             out skel qt;`;
+
+    // Ajouter la recherche si le terme de recherche n'est pas nul
+    if (searchTerm !== null) {
+        overpassQuery += `node(area.searchArea)["name"~"${searchTerm}"];`;
+    }
 
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
 
@@ -126,6 +144,7 @@ async function fetchRestaurantAndBarByCityFromOverpass(cityName) {
         throw error;
     }
 }
+
 const AddtoHistory = async (req, res) => {
     const { url } = req.body;
     try {
@@ -152,8 +171,6 @@ const getHistoryList = async (req, res) => {
     }
 };
 
-
-
 const addToFavorite = async (req, res) => {
     try {
         const favorite = await Favorite.create({ favorite: req.params.id, user_id: req.params.userId })
@@ -178,6 +195,7 @@ const getFavoriteList = async (req, res) => {
         res.status(500).json({ message: 'Erreur lors de la récupération des favoris' });
     }
 };
+
 module.exports = {
     fetchHotelsByCityFromOverpass,
     fetchActivityAndSportsByCityFromOverpass,
