@@ -1,13 +1,10 @@
   <template>
     <div>
-        <HomeSearch></HomeSearch>
-        <select v-model="selectedType" @change="requestOverpass()">
-            <option disabled value="">Sélectionnez le type de lieu souhaité</option>
-            <option value="hotels">Hôtels</option>
-            <option value="events">Évènements</option>
-            <option value="restaurants">Restaurants</option>
-            <option value="transports">Transports</option>
-        </select>
+      <GMapAutocomplete
+        placeholder="This is a placeholder"
+        @place_changed="requestOverpass"
+      >
+      </GMapAutocomplete>
       <button @click="captureScreenshot" id="btnScreenshot" type="button" class="btn btn-primary">Télécharger le pdf</button>
     </div>
     <div id="layout">
@@ -16,7 +13,6 @@
   </template>
   
   <script>
-  import HomeSearch from '../components/HomeSearch.vue'
   import html2canvas from 'html2canvas';
   import jsPDF from 'jspdf';
   import mapboxgl from "mapbox-gl";
@@ -24,16 +20,8 @@
   axios.defaults.baseURL = 'http://localhost:8081';
   mapboxgl.accessToken = "pk.eyJ1IjoibWNoYXVtb250IiwiYSI6ImNsdHd6d2x2NzAxMmYycW12dnh1MnhkanUifQ.h8wQjPrzjaEbZmBWH2yBkg";
   
-  export default { 
-    components: {
-      HomeSearch
-    },
-    data() {
-        return {
-        selectedType: null,
-        selectedCity: null
-        }
-    },
+  export default {
+    props: ['selectedType'],
     mounted() {
       const map = new mapboxgl.Map({
           container: this.$refs.mapContainer,
@@ -44,6 +32,10 @@
       });
   
       this.map = map;
+
+      this.map.once(`load`, (event) => {
+        this.map.resize();
+      });
     },
     unmounted() {
     this.map.remove();
@@ -51,7 +43,7 @@
     },
     methods: {
       async requestOverpass() {
-        await axios.get('/api/' + this.selectedType + '/' + this.selectedCity)
+        await axios.get('/api/' + this.props.selectedType + '/' + this.selectedCity)
         .then(resp => {
             console.log(resp)
         });
