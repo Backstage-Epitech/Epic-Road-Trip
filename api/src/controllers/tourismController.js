@@ -89,7 +89,35 @@ async function fetchTransportFromOverpass(cityName) {
     }
 }
 
-async function fetchRestaurantAndBarByCityFromOverpass(cityName) {
+async function fetchBarByCityFromOverpass(cityName) {
+    const overpassQuery = `[out:json][timeout:25];
+                            area[name="${cityName}"]->.searchArea;
+                            (
+                                // Recherche des bars
+                                node(area.searchArea)["amenity"="bar"];
+                            );
+                            
+                            out body;
+                            >;
+                            out skel qt;`;
+
+    const overpassUrl = 'https://overpass-api.de/api/interpreter';
+    
+    try {
+        const response = await axios.post(overpassUrl, overpassQuery, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+
+        return response.data.elements;
+    } catch (error) {
+        console.error(`Erreur lors de la récupération des restaurants et bars à ${cityName}:`, error);
+        throw error;
+    }
+}
+
+async function fetchRestaurantByCityFromOverpass(cityName) {
     const overpassQuery = `[out:json][timeout:25];
                             area[name="${cityName}"]->.searchArea;
                             (
@@ -97,9 +125,6 @@ async function fetchRestaurantAndBarByCityFromOverpass(cityName) {
                                 node(area.searchArea)["amenity"="restaurant"];
                                 node(area.searchArea)["amenity"="fast_food"];
                                 node(area.searchArea)["amenity"="cafe"];
-                              
-                                // Recherche des bars
-                                node(area.searchArea)["amenity"="bar"];
                             );
                             
                             out body;
@@ -125,6 +150,7 @@ async function fetchRestaurantAndBarByCityFromOverpass(cityName) {
 module.exports = {
     fetchHotelsByCityFromOverpass,
     fetchActivityAndSportsByCityFromOverpass,
-    fetchRestaurantAndBarByCityFromOverpass,
+    fetchRestaurantByCityFromOverpass,
+    fetchBarByCityFromOverpass,
     fetchTransportFromOverpass
 };
