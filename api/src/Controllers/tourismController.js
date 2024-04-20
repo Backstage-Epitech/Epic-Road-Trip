@@ -8,7 +8,7 @@ const Trajet = db.trajet;
 
 
 async function fetchHotelsByCityFromOverpass(cityName,searchTerm = null) {
-    const overpassQuery = `[out:json][timeout:25];
+    let overpassQuery = `[out:json][timeout:25];
                            area["name"="${cityName}"]->.boundaryarea;
                            node["tourism"="hotel"](area.boundaryarea);
                         `;
@@ -20,10 +20,10 @@ async function fetchHotelsByCityFromOverpass(cityName,searchTerm = null) {
     overpassQuery += `out body;
     >;
     out skel qt;`;
-    const overpassUrl = 'https://overpass-api.de/api/interpreter';
+    let overpassUrl = 'https://overpass-api.de/api/interpreter';
 
     try {
-        const response = await axios.post(overpassUrl, overpassQuery, {
+        let response = await axios.post(overpassUrl, overpassQuery, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
@@ -37,7 +37,7 @@ async function fetchHotelsByCityFromOverpass(cityName,searchTerm = null) {
 }
 
 async function fetchActivityAndSportsByCityFromOverpass(cityName,searchTerm = null) {
-    const overpassQuery = `[out:json][timeout:25];
+    let overpassQuery = `[out:json][timeout:25];
                             area[name="${cityName}"]->.searchArea;
                             (
                             node["tourism"="museum"](area.searchArea);
@@ -56,10 +56,10 @@ async function fetchActivityAndSportsByCityFromOverpass(cityName,searchTerm = nu
     overpassQuery += `out body;
     >;
     out skel qt;`;
-    const overpassUrl = 'https://overpass-api.de/api/interpreter';
+    let overpassUrl = 'https://overpass-api.de/api/interpreter';
 
     try {
-        const response = await axios.post(overpassUrl, overpassQuery, {
+        let response = await axios.post(overpassUrl, overpassQuery, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
@@ -73,7 +73,7 @@ async function fetchActivityAndSportsByCityFromOverpass(cityName,searchTerm = nu
 }
 
 async function fetchTransportFromOverpass(cityName,searchTerm = null) {
-    const overpassQuery = `[out:json][timeout:25];
+    let overpassQuery = `[out:json][timeout:25];
     area[name="${cityName}"]->.searchArea;
     (
       node(area.searchArea)["amenity"="bus_station"];
@@ -90,10 +90,10 @@ async function fetchTransportFromOverpass(cityName,searchTerm = null) {
     overpassQuery += `out body;
     >;
     out skel qt;`;
-    const overpassUrl = 'https://overpass-api.de/api/interpreter';
+    let overpassUrl = 'https://overpass-api.de/api/interpreter';
 
     try {
-        const response = await axios.post(overpassUrl, overpassQuery, {
+        let response = await axios.post(overpassUrl, overpassQuery, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
@@ -107,7 +107,7 @@ async function fetchTransportFromOverpass(cityName,searchTerm = null) {
 }
 
 async function fetchBarByCityFromOverpass(cityName,searchTerm = null) {
-    const overpassQuery = `[out:json][timeout:25];
+    let overpassQuery = `[out:json][timeout:25];
                             area[name="${cityName}"]->.searchArea;
                             (
                                 // Recherche des bars
@@ -121,10 +121,10 @@ async function fetchBarByCityFromOverpass(cityName,searchTerm = null) {
     overpassQuery += `out body;
     >;
     out skel qt;`;
-    const overpassUrl = 'https://overpass-api.de/api/interpreter';
+    let overpassUrl = 'https://overpass-api.de/api/interpreter';
     
     try {
-        const response = await axios.post(overpassUrl, overpassQuery, {
+        let response = await axios.post(overpassUrl, overpassQuery, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
@@ -138,7 +138,7 @@ async function fetchBarByCityFromOverpass(cityName,searchTerm = null) {
 }
 
 async function fetchRestaurantByCityFromOverpass(cityName,searchTerm = null) {
-    const overpassQuery = `[out:json][timeout:25];
+    let overpassQuery = `[out:json][timeout:25];
                             area[name="${cityName}"]->.searchArea;
                             (
                                 // Recherche des restaurants
@@ -161,10 +161,10 @@ async function fetchRestaurantByCityFromOverpass(cityName,searchTerm = null) {
     overpassQuery += `out body;
     >;
     out skel qt;`;
-    const overpassUrl = 'https://overpass-api.de/api/interpreter';
+    let overpassUrl = 'https://overpass-api.de/api/interpreter';
 
     try {
-        const response = await axios.post(overpassUrl, overpassQuery, {
+        let response = await axios.post(overpassUrl, overpassQuery, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
