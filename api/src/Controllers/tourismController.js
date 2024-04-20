@@ -6,8 +6,9 @@ const Favorite = db.favorite;
 const Trajet = db.trajet;
 
 
-async function fetchHotelsByCityFromOverpass(cityName, searchTerm = null) {
-    let overpassQuery = `[out:json][timeout:25];
+
+async function fetchHotelsByCityFromOverpass(cityName,searchTerm = null) {
+    const overpassQuery = `[out:json][timeout:25];
                            area["name"="${cityName}"]->.boundaryarea;
                            node["tourism"="hotel"](area.boundaryarea);
                         `;
@@ -35,8 +36,8 @@ async function fetchHotelsByCityFromOverpass(cityName, searchTerm = null) {
     }
 }
 
-async function fetchActivityAndSportsByCityFromOverpass(cityName, searchTerm = null) {
-    let overpassQuery = `[out:json][timeout:25];
+async function fetchActivityAndSportsByCityFromOverpass(cityName,searchTerm = null) {
+    const overpassQuery = `[out:json][timeout:25];
                             area[name="${cityName}"]->.searchArea;
                             (
                             node["tourism"="museum"](area.searchArea);
@@ -71,8 +72,8 @@ async function fetchActivityAndSportsByCityFromOverpass(cityName, searchTerm = n
     }
 }
 
-async function fetchTransportFromOverpass(cityName, searchTerm = null) {
-    let overpassQuery = `[out:json][timeout:25];
+async function fetchTransportFromOverpass(cityName,searchTerm = null) {
+    const overpassQuery = `[out:json][timeout:25];
     area[name="${cityName}"]->.searchArea;
     (
       node(area.searchArea)["amenity"="bus_station"];
@@ -105,18 +106,53 @@ async function fetchTransportFromOverpass(cityName, searchTerm = null) {
     }
 }
 
-async function fetchRestaurantAndBarByCityFromOverpass(cityName, searchTerm = null) {
-    let overpassQuery = `[out:json][timeout:25];
+async function fetchBarByCityFromOverpass(cityName,searchTerm = null) {
+    const overpassQuery = `[out:json][timeout:25];
+                            area[name="${cityName}"]->.searchArea;
+                            (
+                                // Recherche des bars
+                                node(area.searchArea)["amenity"="bar"];
+                            );`;
+
+    // Ajouter la recherche si le terme de recherche n'est pas nul
+    if (searchTerm !== null) {
+        overpassQuery += `node(area.searchArea)["name"~"${searchTerm}"];`;
+    }
+    overpassQuery += `out body;
+    >;
+    out skel qt;`;
+    const overpassUrl = 'https://overpass-api.de/api/interpreter';
+    
+    try {
+        const response = await axios.post(overpassUrl, overpassQuery, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+
+        return response.data.elements;
+    } catch (error) {
+        console.error(`Erreur lors de la récupération des restaurants et bars à ${cityName}:`, error);
+        throw error;
+    }
+}
+
+async function fetchRestaurantByCityFromOverpass(cityName,searchTerm = null) {
+    const overpassQuery = `[out:json][timeout:25];
                             area[name="${cityName}"]->.searchArea;
                             (
                                 // Recherche des restaurants
                                 node(area.searchArea)["amenity"="restaurant"];
                                 node(area.searchArea)["amenity"="fast_food"];
                                 node(area.searchArea)["amenity"="cafe"];
-                              
-                                // Recherche des bars
-                                node(area.searchArea)["amenity"="bar"];
-                            );`;
+                            );
+                            `;
+                            if (searchTerm !== null) {
+                                overpassQuery += `node(area.searchArea)["name"~"${searchTerm}"];`;
+                            }
+                            overpassQuery += `out body;
+                            >;
+                            out skel qt;`;
 
     // Ajouter la recherche si le terme de recherche n'est pas nul
     if (searchTerm !== null) {
@@ -219,13 +255,12 @@ const getListTrajet = async (req, res) => {
 };
 
 
-
-
 module.exports = {
     fetchHotelsByCityFromOverpass,
     fetchActivityAndSportsByCityFromOverpass,
-    fetchRestaurantAndBarByCityFromOverpass,
     fetchTransportFromOverpass,
+    fetchRestaurantByCityFromOverpass,
+    fetchBarByCityFromOverpass,
     AddtoHistory,
     getHistoryList,
     addToFavorite,

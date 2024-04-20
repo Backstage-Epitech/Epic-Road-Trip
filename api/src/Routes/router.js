@@ -1,26 +1,53 @@
 const express = require("express");
+const session = require("express-session");
 const cors = require("cors");
 const { signup, login } = require("../Controllers/userController");
-const { fetchHotelsByCityFromOverpass, fetchActivityAndSportsByCityFromOverpass, fetchRestaurantAndBarByCityFromOverpass, fetchTransportFromOverpass, AddtoHistory, getHistoryList, addToFavorite, getFavoriteList, getListTrajet, AjouterUnTrajet } = require("../Controllers/tourismController");
+const { fetchHotelsByCityFromOverpass, fetchActivityAndSportsByCityFromOverpass, fetchBarByCityFromOverpass,fetchRestaurantByCityFromOverpass ,fetchTransportFromOverpass, AddtoHistory, getHistoryList, addToFavorite, getFavoriteList, getListTrajet, AjouterUnTrajet } = require("../Controllers/tourismController");
+require('../Controllers/authGoogle')
+const passport = require("passport");
+const { isLoggedIn } = require("../Middlewares/authMiddleware");
 
 const app = express();
+app.use(session({secret:'cats'}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Utilisez cors pour gérer les autorisations CORS
 app.use(cors());
 
-app.get('/', (req, res, next) => {
-    res.send('hello world');
+app.get('/auth/google',
+    passport.authenticate('google',{scope:['email','profile'] })
+);
+app.get('/google/callback',
+    passport.authenticate('google'),(req,res) =>{
+        const user = req.user;
+        const accessToken = req.user.token;  
+        res.json({ user, accessToken });
+    });
+
+app.get('/auth/failure',  (req, res) => {
+    res.send('something went wrong..');
+});
+
+app.get('/logout', isLoggedIn, (req, res) => {
+    req.logOut(function(err) {
+        if (err) {
+            console.error(err);
+            return next(err);
+        }
+        res.redirect('/');
+    });
 });
 
 app.post('/signup', signup);
 app.post('/login', login);
 
-app.get('/hotels/:cityName/:searchValue?', async (req, res) => {
+app.get('/sleep/:cityName/:searchValue?', async (req, res) => {
     const cityName = req.params.cityName;
     const searchValue = req.params.searchValue || null;
 
     try {
-        const hotels = await fetchHotelsByCityFromOverpass(cityName, searchValue);
+        const hotels = await fetchHotelsByCityFromOverpass(cityName,searchValue);
         res.json(hotels);
     } catch (error) {
         console.error(`Erreur lors de la récupération des hôtels à ${cityName}:`, error);
@@ -28,54 +55,69 @@ app.get('/hotels/:cityName/:searchValue?', async (req, res) => {
     }
 });
 
-app.get('/events/:cityName/:searchValue?', async (req, res) => {
+app.get('/enjoy/:cityName/:searchValue?', async (req, res) => {
     const cityName = req.params.cityName;
     const searchValue = req.params.searchValue || null;
 
     try {
-        const events = await fetchActivityAndSportsByCityFromOverpass(cityName, searchValue);
+        const events = await fetchActivityAndSportsByCityFromOverpass(cityName,searchValue);
         res.json(events);
     } catch (error) {
-        console.error(`Erreur lors de la récupération des événements à ${cityName}:`, error);
-        res.status(500).json({ message: `Erreur lors de la récupération des événements à ${cityName}` });
+        console.error(`Erreur lors de la récupération des activités à ${cityName}:`, error);
+        res.status(500).json({ message: `Erreur lors de la récupération des activités à ${cityName}` });
     }
 });
 
-app.get('/restaurants/:cityName/:searchValue?', async (req, res) => {
+app.get('/drink/:cityName/:searchValue?', async (req, res) => {
     const cityName = req.params.cityName;
     const searchValue = req.params.searchValue || null;
 
     try {
-        const restaurants = await fetchRestaurantAndBarByCityFromOverpass(cityName, searchValue);
-        res.json(restaurants);
+        const drink = await fetchBarByCityFromOverpass(cityName,searchValue);
+        res.json(drink);
     } catch (error) {
-        console.error(`Erreur lors de la récupération des restaurants à ${cityName}:`, error);
-        res.status(500).json({ message: `Erreur lors de la récupération des restaurants à ${cityName}` });
+        console.error(`Erreur lors de la récupération des bars à ${cityName}:`, error);
+        res.status(500).json({ message: `Erreur lors de la récupération des bars à ${cityName}` });
     }
 });
 
-app.get('/transports/:cityName/:searchValue?', async (req, res) => {
+app.get('/travel/:cityName/:searchValue?', async (req, res) => {
     const cityName = req.params.cityName;
     const searchValue = req.params.searchValue || null;
 
     try {
-        const transports = await fetchTransportFromOverpass(cityName, searchValue);
-        res.json(transports);
+        const travel = await fetchTransportFromOverpass(cityName,searchValue);
+        res.json(travel);
     } catch (error) {
         console.error(`Erreur lors de la récupération des transports à ${cityName}:`, error);
         res.status(500).json({ message: `Erreur lors de la récupération des transports à ${cityName}` });
     }
 });
 
+app.get('/eat/:cityName/:searchValue?', async (req, res) => {
+    const cityName = req.params.cityName;
+    const searchValue = req.params.searchValue || null;
+
+    try {
+        const eat = await fetchRestaurantByCityFromOverpass(cityName,searchValue);
+        res.json(eat);
+    } catch (error) {
+        console.error(`Erreur lors de la récupération des restaurants à ${cityName}:`, error);
+        res.status(500).json({ message: `Erreur lors de la récupération des restaurants à ${cityName}` });
+    }
+});
+
+
 app.post('/history/:id', AddtoHistory);
-
+ 
 app.get('/history/:id', getHistoryList);
-
+ 
 app.post('/favorite/:id/:userId', addToFavorite);
-
+ 
 app.get('/favorite/:id', getFavoriteList);
-
+ 
 app.post('/trajet/:id', AjouterUnTrajet);
-
+ 
 app.get('/trajet/:id', getListTrajet);
+
 module.exports = app;
