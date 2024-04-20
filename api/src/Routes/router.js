@@ -1,9 +1,9 @@
 const express = require("express");
 const session = require("express-session");
 const cors = require("cors");
-const { signup, login } = require("../controllers/userController");
-const { fetchHotelsByCityFromOverpass, fetchActivityAndSportsByCityFromOverpass, fetchTransportFromOverpass, fetchBarByCityFromOverpass, fetchRestaurantByCityFromOverpass } = require("../controllers/tourismController");
-require('../controllers/authGoogle')
+const { signup, login } = require("../Controllers/userController");
+const { fetchHotelsByCityFromOverpass, fetchActivityAndSportsByCityFromOverpass, fetchBarByCityFromOverpass,fetchRestaurantByCityFromOverpass ,fetchTransportFromOverpass, AddtoHistory, getHistoryList, addToFavorite, getFavoriteList, getListTrajet, AjouterUnTrajet } = require("../Controllers/tourismController");
+require('../Controllers/authGoogle')
 const passport = require("passport");
 const { isLoggedIn } = require("../Middlewares/authMiddleware");
 
@@ -42,11 +42,12 @@ app.get('/logout', isLoggedIn, (req, res) => {
 app.post('/signup', signup);
 app.post('/login', login);
 
-app.get('/sleep/:cityName', async (req, res) => {
+app.get('/sleep/:cityName/:searchValue?', async (req, res) => {
     const cityName = req.params.cityName;
+    const searchValue = req.params.searchValue || null;
 
     try {
-        const hotels = await fetchHotelsByCityFromOverpass(cityName);
+        const hotels = await fetchHotelsByCityFromOverpass(cityName,searchValue);
         res.json(hotels);
     } catch (error) {
         console.error(`Erreur lors de la récupération des hôtels à ${cityName}:`, error);
@@ -54,11 +55,12 @@ app.get('/sleep/:cityName', async (req, res) => {
     }
 });
 
-app.get('/enjoy/:cityName', async (req, res) => {
+app.get('/enjoy/:cityName/:searchValue?', async (req, res) => {
     const cityName = req.params.cityName;
+    const searchValue = req.params.searchValue || null;
 
     try {
-        const events = await fetchActivityAndSportsByCityFromOverpass(cityName);
+        const events = await fetchActivityAndSportsByCityFromOverpass(cityName,searchValue);
         res.json(events);
     } catch (error) {
         console.error(`Erreur lors de la récupération des activités à ${cityName}:`, error);
@@ -66,11 +68,12 @@ app.get('/enjoy/:cityName', async (req, res) => {
     }
 });
 
-app.get('/drink/:cityName', async (req, res) => {
+app.get('/drink/:cityName/:searchValue?', async (req, res) => {
     const cityName = req.params.cityName;
+    const searchValue = req.params.searchValue || null;
 
     try {
-        const drink = await fetchBarByCityFromOverpass(cityName);
+        const drink = await fetchBarByCityFromOverpass(cityName,searchValue);
         res.json(drink);
     } catch (error) {
         console.error(`Erreur lors de la récupération des bars à ${cityName}:`, error);
@@ -78,11 +81,12 @@ app.get('/drink/:cityName', async (req, res) => {
     }
 });
 
-app.get('/travel/:cityName', async (req, res) => {
+app.get('/travel/:cityName/:searchValue?', async (req, res) => {
     const cityName = req.params.cityName;
+    const searchValue = req.params.searchValue || null;
 
     try {
-        const travel = await fetchTransportFromOverpass(cityName);
+        const travel = await fetchTransportFromOverpass(cityName,searchValue);
         res.json(travel);
     } catch (error) {
         console.error(`Erreur lors de la récupération des transports à ${cityName}:`, error);
@@ -90,11 +94,12 @@ app.get('/travel/:cityName', async (req, res) => {
     }
 });
 
-app.get('/eat/:cityName', async (req, res) => {
+app.get('/eat/:cityName/:searchValue?', async (req, res) => {
     const cityName = req.params.cityName;
+    const searchValue = req.params.searchValue || null;
 
     try {
-        const eat = await fetchRestaurantByCityFromOverpass(cityName);
+        const eat = await fetchRestaurantByCityFromOverpass(cityName,searchValue);
         res.json(eat);
     } catch (error) {
         console.error(`Erreur lors de la récupération des restaurants à ${cityName}:`, error);
@@ -103,5 +108,16 @@ app.get('/eat/:cityName', async (req, res) => {
 });
 
 
+app.post('/history/:id', AddtoHistory);
+ 
+app.get('/history/:id', getHistoryList);
+ 
+app.post('/favorite/:id/:userId', addToFavorite);
+ 
+app.get('/favorite/:id', getFavoriteList);
+ 
+app.post('/trajet/:id', AjouterUnTrajet);
+ 
+app.get('/trajet/:id', getListTrajet);
 
-module.exports = app
+module.exports = app;

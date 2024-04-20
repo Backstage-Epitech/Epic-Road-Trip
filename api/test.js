@@ -45,3 +45,42 @@ describe('Get Evenements', () => {
             .expect(200);
     },);
 });
+
+describe('Add to Favorite', () => {
+    it('devrait ajouter un favori avec succès', async () => {
+        const userId = 1;
+        const id = 12345;
+        const response = request(app)
+            .post(`/favorite/${id}/${userId}`)
+            .expect(201);
+    });
+});
+
+describe('Get Favorite List', () => {
+    it('devrait retourner la liste des favoris pour un utilisateur donné', async () => {
+        const userId = 1;
+        const response = request(app)
+            .get(`/favorite/${userId}`)
+            .expect(200);
+    });
+});
+
+describe('Ajouter un trajet', () => {
+    it('devrait ajouter un trajet avec succès', async () => {
+        const userId = '1';
+        const requestBody = { depart: 'Lieu de départ', arrive: 'Lieu d\'arrivée' };
+        const response = await request(app)
+            .post(`/trajet/${userId}`)
+            .send(requestBody)
+            .expect(201);
+    });
+});
+
+describe('Obtenir la liste des trajets', () => {
+    it('devrait retourner la liste des trajets pour un utilisateur donné', async () => {
+        const userId = '1';
+        const response = await request(app)
+            .get(`/trajet/${userId}`)
+            .expect(200);
+    });
+});
