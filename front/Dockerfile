@@ -2,7 +2,7 @@ FROM node:18
 # Create app directory
 WORKDIR /usr/src/app
 # Copy package.json and package-lock.json
-
+# COPY package*.json ./
 # Supprimer le dossier node_modules s'il existe déjà
 RUN rm -rf node_modules
 # Install app dependencies
