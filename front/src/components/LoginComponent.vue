@@ -1,10 +1,9 @@
 <script lang="ts" setup>
-//import EventBus from '../components/EventBus.js'
 
 import router from '@/router'
 import axios from 'axios'
 import { ref } from 'vue'
-import EventBus from './EventBus.js'
+import EventBus from './EventBus'
 import { decodeCredential, type CallbackTypes } from 'vue3-google-login'
 
 const email = ref('')

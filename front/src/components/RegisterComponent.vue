@@ -2,7 +2,7 @@
 import router from '@/router'
 import axios from 'axios'
 import { ref } from 'vue'
-import EventBus from './EventBus.js'
+import EventBus from './EventBus'
 
 axios.defaults.baseURL = 'http://localhost:8081'
 
