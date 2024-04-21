@@ -11,8 +11,9 @@ import * as directives from 'vuetify/directives'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import mitt from 'mitt';
+import VueGoogleMaps from '@fawmi/vue-google-maps'
 
-const app = createApp(App)
+const app = createApp(App);
 const emitter = mitt();
 app.config.globalProperties.emitter = emitter;
 
@@ -31,4 +32,10 @@ const vuetify = createVuetify({
   directives,
 })
 
-createApp(App).use(vuetify).use(router).component('VueDatePicker', VueDatePicker).mount('#app')
+createApp(App).use(vuetify).use(router).use(VueGoogleMaps, {
+  load: {
+      key: 'AIzaSyCs48gRBEFRP_R8_bQ_Q4BvmvWxq5vUzew',
+      libraries: "places"
+      // language: 'de',
+  },
+}).component('VueDatePicker', VueDatePicker).mount('#app')

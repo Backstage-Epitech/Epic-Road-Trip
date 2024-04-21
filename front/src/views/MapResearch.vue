@@ -1,13 +1,11 @@
   <template>
     <div>
-        <HomeSearch></HomeSearch>
-        <select v-model="selectedType" @change="requestOverpass()">
-            <option disabled value="">Sélectionnez le type de lieu souhaité</option>
-            <option value="hotels">Hôtels</option>
-            <option value="events">Évènements</option>
-            <option value="restaurants">Restaurants</option>
-            <option value="transports">Transports</option>
-        </select>
+      <GMapAutocomplete
+        placeholder="This is a placeholder"
+        @place_changed="requestOverpass"
+        :options="{type: ['(cities)']}"
+      >
+      </GMapAutocomplete>
       <button @click="captureScreenshot" id="btnScreenshot" type="button" class="btn btn-primary">Télécharger le pdf</button>
     </div>
     <div id="layout">
@@ -16,7 +14,6 @@
   </template>
   
   <script>
-  import HomeSearch from '../components/HomeSearch.vue'
   import html2canvas from 'html2canvas';
   import jsPDF from 'jspdf';
   import mapboxgl from "mapbox-gl";
@@ -24,15 +21,17 @@
   axios.defaults.baseURL = 'http://localhost:8081';
   mapboxgl.accessToken = "pk.eyJ1IjoibWNoYXVtb250IiwiYSI6ImNsdHd6d2x2NzAxMmYycW12dnh1MnhkanUifQ.h8wQjPrzjaEbZmBWH2yBkg";
   
-  export default { 
-    components: {
-      HomeSearch
+  export default {
+    props: {
+      research: {
+        required: true,
+        type: String
+      }
     },
     data() {
-        return {
-        selectedType: null,
-        selectedCity: null
-        }
+      return {
+        place: String
+      }
     },
     mounted() {
       const map = new mapboxgl.Map({
@@ -44,17 +43,73 @@
       });
   
       this.map = map;
+
+      this.map.once(`load`, (event) => {
+        this.map.resize();
+      });
     },
     unmounted() {
     this.map.remove();
     this.map = null;
     },
     methods: {
-      async requestOverpass() {
-        await axios.get('/api/' + this.selectedType + '/' + this.selectedCity)
+      async requestOverpass(place) {
+        console.log(place)
+        console.log(this.research)
+        this.place = place;
+        this.map.setCenter(new mapboxgl.LngLat(place.geometry.location.lng(), place.geometry.location.lat()));
+
+        let myGeoJson = '';
+        await axios.get('/api/' + this.research + '/' + this.place.name)
         .then(resp => {
-            console.log(resp)
+            console.log(resp);
+
+            myGeoJson += '{ "type": "FeatureCollection", "features": ['
+
+            resp.data.forEach((element, index) => {
+              myGeoJson += `{
+                "type": "Feature",
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    ${element.lon},
+                    ${element.lat}
+                  ]
+                },
+                "properties": {
+                  "name": "${element.tags.name ? element.tags.name : "default_name"}",
+                  "prix": "${Math.floor(Math.random() * (100 - 20 + 1)) + 20}€"
+                }
+              }`;
+
+              if (index+1 !== resp.data.length) {
+                myGeoJson += ',';
+              } else {
+                myGeoJson += ']}';
+              }
+            });
         });
+
+        console.log(myGeoJson);
+        this.map.on(`click`, () => {
+          this.map.addSource('earthquakes', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: myGeoJson
+          });
+
+          this. map.addLayer({
+            'id': 'earthquakes-layer',
+            'type': 'circle',
+            'source': 'earthquakes',
+            'paint': {
+              'circle-radius': 4,
+              'circle-stroke-width': 2,
+              'circle-color': 'red',
+              'circle-stroke-color': 'white'
+            }
+          });
+        })
       },
       captureScreenshot() {
         const element = document.getElementById('mapContainer');
@@ -80,7 +135,7 @@
           const pdf = new jsPDF('landscape');
   
           // Add title
-          const title = 'Itinéraire exporté au format .PDF';
+          const title = 'Carte exportée au format .PDF';
           const titleX = (pdf.internal.pageSize.width - pdf.getStringUnitWidth(title) * 5) / 2; // Center horizontally
           const titleY = 20; // Adjust positioning as needed
           pdf.setFontSize(18);
@@ -105,8 +160,11 @@
   
   <style>
   .map-container {
-    flex: 1;
-    height: 100%;
+    display: block;
+    position: absolute; 
+    top: 0;
+    bottom: 0;
+    width: 100%;
   }
   
   .mapboxgl-control-container {

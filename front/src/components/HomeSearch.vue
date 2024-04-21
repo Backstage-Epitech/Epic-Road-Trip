@@ -13,10 +13,13 @@
             option-value="code"
             :custom-text="formatCity"
             @searchchange="updateCityList"
-            @update:modelValue="stringItem"
             placeholder="select item"
+            ></model-list-select>
+          <GMapAutocomplete
+            placeholder="Point de départ"
+            @place_change=""
           >
-          </model-list-select>
+          </GMapAutocomplete>
           <input
             type="text"
             class="search_input search_input_3 bg-white"
@@ -69,6 +72,8 @@ onMounted(() => {
 
 const updateCityList = async (searchText: string) => {
   try {
+    if(searchText === '') return;
+
     const currentSelection = stringItem.value
     const response = await axios.get<City[]>(
       `https://geo.api.gouv.fr/communes?nom=${searchText}&fields=departement&limit=7`
@@ -79,7 +84,7 @@ const updateCityList = async (searchText: string) => {
       code: city.code
     }))
     stringItem.value = currentSelection
-    console.log(stringItem)
+    console.log(stringItem.value)
   } catch (error) {
     console.error(error)
   }

@@ -8,8 +8,6 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
-    "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
-    "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
@@ -17,6 +15,7 @@
     "host": "vite --host"
   },
   "dependencies": {
+    "@fawmi/vue-google-maps": "^0.9.79",
     "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^8.3.1",
     "axios": "^1.6.8",
@@ -42,9 +41,7 @@
     "@vue/test-utils": "^2.4.4",
     "@vue/tsconfig": "^0.5.1",
     "bootstrap": "^4.6.2",
-    "cypress": "^13.6.3",
     "eslint": "^8.49.0",
-    "eslint-plugin-cypress": "^2.15.1",
     "eslint-plugin-vue": "^9.17.0",
     "jsdom": "^24.0.0",
     "npm-run-all2": "^6.1.1",
