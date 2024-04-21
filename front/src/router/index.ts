@@ -3,6 +3,7 @@ import PlanificationView from '@/views/PlanificationView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import Reservation from '@/components/Reservation.vue'
+import Historique from '@/components/Historique.vue'
 
 
 export const PLANIFICATION_URL = '/planification'
@@ -34,6 +35,11 @@ const router = createRouter({
       path:'/reservations',
       name:'reservations',
       component: Reservation
+    },
+    {
+      path:'/histo',
+      name:'historique',
+      component: Historique
     }
   ]
 })
