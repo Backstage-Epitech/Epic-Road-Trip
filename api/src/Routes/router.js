@@ -1,7 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const cors = require("cors");
-const { signup, login } = require("../Controllers/userController");
+const { signup, login, loginOrSignUpWithGoogleAuth } = require("../Controllers/userController");
 const { fetchHotelsByCityFromOverpass, fetchActivityAndSportsByCityFromOverpass, fetchBarByCityFromOverpass,fetchRestaurantByCityFromOverpass ,fetchTransportFromOverpass, AddtoHistory, getHistoryList, addToFavorite, getFavoriteList, getListTrajet, AjouterUnTrajet } = require("../Controllers/tourismController");
 require('../Controllers/authGoogle')
 const passport = require("passport");
@@ -15,15 +15,7 @@ app.use(passport.session());
 // Utilisez cors pour gérer les autorisations CORS
 app.use(cors());
 
-app.get('/auth/google',
-    passport.authenticate('google',{scope:['email','profile'] })
-);
-app.get('/google/callback',
-    passport.authenticate('google'),(req,res) =>{
-        const user = req.user;
-        const accessToken = req.user.token;  
-        res.json({ user, accessToken });
-    });
+app.post('/auth/google', loginOrSignUpWithGoogleAuth);
 
 app.get('/auth/failure',  (req, res) => {
     res.send('something went wrong..');

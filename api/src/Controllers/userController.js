@@ -90,7 +90,47 @@ const login = async (req, res) => {
     }
 };
 
+const loginOrSignUpWithGoogleAuth = async (req, res) => {
+    try {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        const { email, name, picture } = req.body;
 
+        // Recherche de l'utilisateur par son email
+        const user = await User.findOne({
+            where: {
+                email: email
+            }
+        });
+
+        if (user) {
+            const userWithoutPassword = { ...user.get() };
+            let token = jwt.sign({ id: user.id }, process.env.secretKey, {
+                expiresIn: 1 * 24 * 60 * 60 * 1000,
+            });
+            return res.status(201).send({ user: userWithoutPassword, token });
+
+        } else {
+            newUser = {
+                userName: name,
+                email: email,
+                password: 'null',
+                role: 'user',
+                image: picture
+            }
+            const user = await User.create(newUser);
+            const userWithoutPassword = { ...user.get() }
+
+            let token = jwt.sign({ id: user.id }, process.env.secretKey, {
+                expiresIn: 1 * 24 * 60 * 60 * 1000,
+            });
+
+            return res.status(201).send({ user: userWithoutPassword, token });
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 const verifyToken = (req, res, next) => {
     // Récupérer le token du header Authorization
@@ -176,5 +216,6 @@ module.exports = {
     login,
     verifyToken,
     getUser,
-    editUser
+    editUser,
+    loginOrSignUpWithGoogleAuth
 };
