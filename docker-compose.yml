@@ -12,18 +12,18 @@ services:
     volumes:
       - local_pgdata:/var/lib/postgresql/data
 
-  # pgweb:
-  #   container_name: pgweb
-  #   restart: always
-  #   image: sosedoff/pgweb
-  #   ports: 
-  #     - 8888:8081
-  #   links: 
-  #     - postgres:postgres
-  #   environment:
-  #     - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable
-  #   depends_on:
-  #     - postgres
+  pgweb:
+    container_name: pgweb
+    restart: always
+    image: sosedoff/pgweb
+    ports: 
+      - 8888:8081
+    links: 
+      - postgres:postgres
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable
+    depends_on:
+      - postgres
 
   front:
     build: 

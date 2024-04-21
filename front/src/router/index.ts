@@ -2,7 +2,6 @@ import HomeView from '@/views/HomeView.vue'
 import PlanificationView from '@/views/PlanificationView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import MapItinerary from './../components/MapItinerary.vue'
 
 
 export const PLANIFICATION_URL = '/planification'
@@ -29,11 +28,6 @@ const router = createRouter({
       name: 'profile',
       component: ProfileView,
       meta: { requiresAuth: true }
-    },
-    {
-      path: '/map-research/:research/:numbercomposant', // Utilisez un paramètre dynamique pour les paramètres de recherche
-      name: 'MapItinerary', // Nommez votre route
-      component: MapItinerary
     },
   ]
 })
