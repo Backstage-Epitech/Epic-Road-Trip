@@ -34,8 +34,8 @@ const router = createRouter({
       component: PlanificationView
     },
     {
-      path: '/reservations',
-      name: 'reservations',
+      path: '/profile',
+      name: 'profile',
       component: ProfileView,
       meta: { requiresAuth: true }
     },

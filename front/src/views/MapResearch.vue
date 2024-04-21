@@ -1,7 +1,7 @@
   <template>
     <div>
       <GMapAutocomplete
-        placeholder="This is a placeholder"
+        placeholder="Entrez un nom de ville"
         @place_changed="requestOverpass"
         :options="{type: ['(cities)']}"
       >
@@ -47,6 +47,23 @@
       this.map.once(`load`, (event) => {
         this.map.resize();
       });
+
+      this.map.on('click', (event) => {
+        const features = this.map.queryRenderedFeatures(event.point, {
+          layers: [`${this.research}-layer`]
+        });
+        if (!features.length) {
+          return;
+        }
+        const feature = features[0];
+
+        const popup = new mapboxgl.Popup({ offset: [0, -15] })
+          .setLngLat(feature.geometry.coordinates)
+          .setHTML(
+            `<h3>${feature.properties.name}</h3><p>${feature.properties.prix}</p>`
+          )
+          .addTo(this.map);
+      });
     },
     unmounted() {
     this.map.remove();
@@ -64,7 +81,7 @@
         .then(resp => {
             console.log(resp);
 
-            myGeoJson += '{ "type": "FeatureCollection", "features": ['
+            myGeoJson += `[`;
 
             resp.data.forEach((element, index) => {
               myGeoJson += `{
@@ -77,39 +94,41 @@
                   ]
                 },
                 "properties": {
-                  "name": "${element.tags.name ? element.tags.name : "default_name"}",
+                  "id": "${index}",
+                  "name": "${(element.tags.name && !element.tags.name.includes('"')) ? element.tags.name : "default_name"}",
                   "prix": "${Math.floor(Math.random() * (100 - 20 + 1)) + 20}€"
                 }
               }`;
 
               if (index+1 !== resp.data.length) {
-                myGeoJson += ',';
+                myGeoJson += ', ';
               } else {
-                myGeoJson += ']}';
+                myGeoJson += ']';
               }
             });
         });
 
         console.log(myGeoJson);
-        this.map.on(`click`, () => {
-          this.map.addSource('earthquakes', {
-            type: 'geojson',
-            // Use a URL for the value for the `data` property.
-            data: myGeoJson
-          });
+        this.map.addSource(this.research, {
+          type: 'geojson',
+          // Use a URL for the value for the `data` property.
+          data: {
+            "type": "FeatureCollection",
+            "features": JSON.parse(myGeoJson)
+        }
+        });
 
-          this. map.addLayer({
-            'id': 'earthquakes-layer',
-            'type': 'circle',
-            'source': 'earthquakes',
-            'paint': {
-              'circle-radius': 4,
-              'circle-stroke-width': 2,
-              'circle-color': 'red',
-              'circle-stroke-color': 'white'
-            }
-          });
-        })
+        this.map.addLayer({
+          'id': `${this.research}-layer`,
+          'type': 'circle',
+          'source': `${this.research}`,
+          'paint': {
+            'circle-radius': 4,
+            'circle-stroke-width': 2,
+            'circle-color': 'red',
+            'circle-stroke-color': 'white'
+          }
+        });
       },
       captureScreenshot() {
         const element = document.getElementById('mapContainer');
