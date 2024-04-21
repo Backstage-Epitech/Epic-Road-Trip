@@ -10,7 +10,7 @@
           <model-list-select
             :list="cities"
             v-model="cityFrom"
-            option-value="code"
+            option-value="nom"
             :custom-text="formatCity"
             @searchchange="updateCityList"
             placeholder="select item"
@@ -19,7 +19,7 @@
           <model-list-select
             :list="cities2"
             v-model="cityDestination"
-            option-value="code"
+            option-value="nom"
             :custom-text="formatCity"
             @searchchange="updateCityDestinationList"
             placeholder="select item"
@@ -30,6 +30,7 @@
               type="number"
               v-model="budget"
               step="10"
+              min="0"
               class="search_input search_input_4 bg-white"
               placeholder="Budget"
               aria-label="Euros"
@@ -71,7 +72,7 @@ interface City {
 
 const travel = computed(() => {
   return {
-    dates: dates.value.map(date => date.toJSON().split('T')[0]),
+    dates: dates.value.map((date) => date.toJSON().split('T')[0]),
     cityFrom: cityFrom.value,
     cityDestination: cityDestination.value,
     budget: budget.value
@@ -104,7 +105,7 @@ const updateCityDestinationList = async (searchText: string) => {
     const response = await axios.get<City[]>(
       `https://geo.api.gouv.fr/communes?nom=${searchText}&fields=departement&limit=7`
     )
-    cities2.value = response.data 
+    cities2.value = response.data
   } catch (error) {
     console.error(error)
   }

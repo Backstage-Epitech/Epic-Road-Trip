@@ -42,10 +42,7 @@ const tab = ref<string>('one')
   <v-card height="90vh">
     <v-tabs class="mt-1" v-model="tab" fixed-tabs bg-color="white">
       <v-tab value="one">Itineraire</v-tab>
-      <v-tab value="two">Hébergements</v-tab>
-      <v-tab value="three">Activités</v-tab>
-      <v-tab value="four">Restaurants</v-tab>
-      <v-tab value="five">Bars</v-tab>
+      <v-tab value="two">Découvrir</v-tab>
     </v-tabs>
     <v-row class="flex-child text-subtitle-2 mt-3">
       <v-col cols="12" md="3">
@@ -75,19 +72,7 @@ const tab = ref<string>('one')
                     <MapItinerary />
                   </v-window-item>
                   <v-window-item value="two" class="mapTabs">
-                    <HotelComponent />
-                  </v-window-item>
-                  <v-window-item value="two" class="mapTabs">
-                    <MapResearch research="sleep" numbercomposant="1" />
-                  </v-window-item>
-                  <v-window-item value="three" class="mapTabs">
-                    <MapResearch research="enjoy" numbercomposant="2" />
-                  </v-window-item>
-                  <v-window-item value="four" class="mapTabs">
-                    <MapResearch research="eat" numbercomposant="3" />
-                  </v-window-item>
-                  <v-window-item value="five" class="mapTabs">
-                    <MapResearch research="drink" numbercomposant="4" />
+                    <MapResearch numbercomposant="1" />
                   </v-window-item>
                 </v-window>
               </v-card-text>
