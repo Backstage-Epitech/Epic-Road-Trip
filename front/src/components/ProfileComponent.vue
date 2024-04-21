@@ -13,12 +13,20 @@
             <p class="info">{{ userConnected.email }}</p>
             <div class="stats row">
               <div class="stat col-xs-4">
-                <p class="number-stat">3</p>
+                <p class="number-stat">{{ userConnected.voyages.length }}</p>
                 <p class="desc-stat">Voyages</p>
               </div>
               <div class="stat col-xs-4">
-                <p class="number-stat">5</p>
+                <p class="number-stat">{{ userConnected.favoris.length }}</p>
                 <p class="desc-stat">Favoris</p>
+              </div>
+            </div>
+            <span><strong>Favoris</strong></span>
+            <div class="stats row">
+              <div class="stat col-xs-4">
+                <li v-for="favori in userConnected.favoris" :key="favori.favorite.id">
+                  {{ favori.favorite }}
+                </li>
               </div>
             </div>
           </div>
@@ -33,24 +41,51 @@
   </v-container>
 </template>
 <script setup lang="ts">
+import { onMounted } from 'vue'
+import axios from 'axios'
+axios.defaults.baseURL = 'http://localhost:8081'
 
 interface User {
   id: string
   email: string
   userName: string
   role: string
-  image: string
+  image: string,
+  voyages: Voyage[],
+  favoris: Favori[]
 }
+
+interface Favori {
+  message: string,
+	favorite: {
+		id: number,
+		favorite: string,
+		user_id: number,
+		updatedAt: string,
+		createdAt: string
+	}
+}
+
+interface Voyage {}
 
 const userConnected: User = {
   id: JSON.parse(localStorage.getItem('user') || '')['id'],
   email: JSON.parse(localStorage.getItem('user') || '')['email'],
   userName: JSON.parse(localStorage.getItem('user') || '')['userName'],
   role: JSON.parse(localStorage.getItem('user') || '')['role'],
-  image: JSON.parse(localStorage.getItem('user') || '')['image']
+  image: JSON.parse(localStorage.getItem('user') || '')['image'],
+  voyages: [],
+  favoris: []
 }
 
-//http://localhost:8081/api/favorite/2
+onMounted(async () => {
+  await axios.get('/api/favorite/'+userConnected.id)
+  .then((resp) => {
+    console.log(resp)
+    userConnected.favoris = resp.data.favoriteList;
+  })
+})
+
 </script>
 <style scoped>
 h2 {

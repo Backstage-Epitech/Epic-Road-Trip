@@ -37,7 +37,7 @@
         place: String
       }
     },
-    mounted() {
+    async mounted() {
       const map = new mapboxgl.Map({
           container: this.$refs.mapContainer,
           style: "mapbox://styles/mapbox/streets-v12", // Replace with your preferred map style
@@ -66,8 +66,11 @@
         popupBtn.innerHTML = `<button id="btnFavoris" type="button" class="btn btn-primary">Ajouter aux favoris</button>`;
         divElement.innerHTML = `<h3>${feature.properties.name}</h3><p>${feature.properties.prix}</p>`;
         divElement.appendChild(popupBtn);
-        popupBtn.addEventListener('click', (e) => {
-          console.log('Button clicked');
+        popupBtn.addEventListener('click', async (e) => {
+          await axios.post('/api/favorite/'+feature.properties.name+' '+feature.properties.prix+'/'+JSON.parse(localStorage.getItem('user') || '')['id'])
+            .then((resp) => {
+              console.log(resp)
+            })
         });
 
         const popup = new mapboxgl.Popup({ offset: [0, -15] })
