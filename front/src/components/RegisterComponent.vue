@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import router from '@/router';
+import router from '@/router'
 import axios from 'axios'
 import { ref } from 'vue'
 import EventBus from './EventBus.js'
-
 
 axios.defaults.baseURL = 'http://localhost:8081'
 
@@ -51,7 +50,6 @@ const handleImageChange = async (event: Event) => {
   reader.onload = async (event) => {
     // Get the image data URL
     const imageDataUrl = event.target?.result?.toString()
-
     console.log({ target: event.target })
 
     // Create an image element
@@ -106,49 +104,58 @@ const handleImageChange = async (event: Event) => {
 </script>
 
 <template>
-  <div class="d-flex flex-column justify-content-center align-items-center mt-5">
-    <v-form @submit.prevent="register">
-      <fieldset class="d-flex flex-column justify-content-center">
-        <legend class="d-flex flex-row justify-content-center align-items-center pb-4">
-          <h2>Register</h2>
-        </legend>
-        <v-text-field
-          v-model="userName"
-          label="Username"
-          type="text"
-          required
-          outlined
-          dense
-          clearable
-        />
-        <v-text-field
-          v-model="email"
-          label="Email"
-          type="email"
-          required
-          outlined
-          dense
-          clearable
-        />
-        <v-text-field
-          v-model="password"
-          label="Password"
-          type="password"
-          required
-          outlined
-          dense
-          clearable
-        />
-        <label for="register-form.image">Profile picture</label>
-        <input id="register-form.image" type="file" accept="image/*" @change="handleImageChange" />
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <v-col class="my-15 mx-auto" cols="12" md="5">
+      <v-form @submit.prevent="register">
+        <fieldset class="d-flex flex-column justify-content-center">
+          <legend class="d-flex flex-row justify-content-center align-items-center pb-4">
+            <h3 class="text-center font-weight-bold">Formulaire d'inscription</h3>
+          </legend>
+          <v-text-field
+            v-model="userName"
+            label="Username"
+            type="text"
+            required
+            outlined
+            dense
+            clearable
+          />
+          <v-text-field
+            v-model="email"
+            label="Email"
+            type="email"
+            required
+            outlined
+            dense
+            clearable
+          />
+          <v-text-field
+            v-model="password"
+            label="Password"
+            type="password"
+            required
+            outlined
+            dense
+            clearable
+          />
+          <label class="label-img" for="register-form.image">Photo de profile</label>
+          <div class="custom-file-upload">
+            <input
+              id="register-form.image"
+              type="file"
+              accept="image/*"
+              @change="handleImageChange"
+            />
+          </div>
 
-        <div class="d-flex flex-column align-items-center justify-content-center">
-          <button class="sendButton mb-4" type="submit">Register</button>
-
-          <RouterLink class="dynamicLink" :to="'/login'"> Ou se connecter </RouterLink>
-        </div>
-      </fieldset>
-    </v-form>
+          <div class="d-flex flex-column align-items-center justify-content-center">
+            <v-col cols="auto">
+              <v-btn color="light-green-darken-2" type="submit">S'inscrire</v-btn>
+            </v-col>
+          </div>
+        </fieldset>
+      </v-form>
+    </v-col>
   </div>
 </template>
 
@@ -171,18 +178,4 @@ const handleImageChange = async (event: Event) => {
   color: #0d100e;
 }
 
-.sendButton {
-  height: 37.2px;
-  margin-bottom: 16px;
-  color: aliceblue;
-  border: 1px solid aliceblue;
-  background-color: #0d100e;
-  width: 130px;
-  margin-top: 15px;
-  border-radius: 8px;
-}
-
-.sendButton:hover {
-  background-color: #353936;
-}
 </style>

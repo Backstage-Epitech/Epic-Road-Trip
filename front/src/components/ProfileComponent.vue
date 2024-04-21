@@ -5,7 +5,7 @@
         <v-sheet class="mx-auto">
           <div class="left-box col-lg-5">
             <div class="photo-left">
-              <img alt="profile" class="photo" :src="userConnected.image" />
+              <img alt="profile" class="photo" :src="userConnected.image ? userConnected.image : 'https://picsum.photos/200/300'" />
               <div class="active"></div>
             </div>
             <h4 class="name">{{ userConnected.userName }}</h4>
@@ -26,9 +26,7 @@
       </v-col>
       <v-col class="my-15 mx-auto" cols="12" md="6">
         <v-row class="ma-n3">
-          <v-col cols="12">
-            
-          </v-col>
+          <v-col cols="12"> </v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -37,23 +35,22 @@
 <script setup lang="ts">
 
 interface User {
-    id: string
-    email: string
-    userName: string
-    role: string
-    image: string
+  id: string
+  email: string
+  userName: string
+  role: string
+  image: string
 }
 
 const userConnected: User = {
-    id: JSON.parse(localStorage.getItem('user') || '')['id'],
-    email: JSON.parse(localStorage.getItem('user') || '')['email'],
-    userName: JSON.parse(localStorage.getItem('user') || '')['userName'],
-    role: JSON.parse(localStorage.getItem('user') || '')['role'],
-    image: JSON.parse(localStorage.getItem('user') || '')['image']
+  id: JSON.parse(localStorage.getItem('user') || '')['id'],
+  email: JSON.parse(localStorage.getItem('user') || '')['email'],
+  userName: JSON.parse(localStorage.getItem('user') || '')['userName'],
+  role: JSON.parse(localStorage.getItem('user') || '')['role'],
+  image: JSON.parse(localStorage.getItem('user') || '')['image']
 }
 
 //http://localhost:8081/api/favorite/2
-
 </script>
 <style scoped>
 h2 {
@@ -93,7 +90,7 @@ span {
 }
 
 .left-box {
-    text-align-last: center;
+  text-align-last: center;
 }
 
 .stats {
@@ -103,7 +100,6 @@ span {
   border-bottom: 1px solid #ededed;
   font-family: 'Montserrat', sans-serif;
 }
-
 
 .number-stat {
   padding: 0px;
@@ -120,6 +116,6 @@ span {
 }
 
 .stats.row {
-    justify-content: space-around;
+  justify-content: space-around;
 }
 </style>

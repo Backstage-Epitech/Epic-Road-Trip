@@ -53,7 +53,7 @@ const loginUser = async () => {
               outlined
               dense
               clearable
-            ></v-text-field>
+            />
             <v-text-field
               v-model="password"
               label="password"
@@ -62,7 +62,7 @@ const loginUser = async () => {
               outlined
               dense
               clearable
-            ></v-text-field>
+            />
             <v-alert v-if="errorMessage" type="warning" variant="outlined" prominent>
               {{ errorMessage }}
             </v-alert>
@@ -73,13 +73,11 @@ const loginUser = async () => {
                 </v-col>
               </v-row>
             </v-container>
-            <v-btn
-              class="mt-2"
-              color="light-green-darken-2"
-              text="Se connecter"
-              type="submit"
-              block
-            ></v-btn>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+              <v-col cols="auto">
+                <v-btn color="light-green-darken-2" type="submit">Connection</v-btn>
+              </v-col>
+            </div>
           </v-form>
         </v-sheet>
       </v-col>
