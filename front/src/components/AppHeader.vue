@@ -46,11 +46,6 @@ export default {
       <span class="v-btn__content">Historique</span>
     </router-link>
     <div class="v-spacer"></div>
-    <router-link to="/profile" class="v-btn v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-text">
-      <span class="v-btn__overlay"></span>
-      <span class="v-btn__underlay"></span>
-      <span class="v-btn__content">Profile</span>
-    </router-link>
     <router-link to="/login" class="ms-4 v-btn v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-text">
       <span class="v-btn__overlay"></span>
       <span class="v-btn__underlay"></span>

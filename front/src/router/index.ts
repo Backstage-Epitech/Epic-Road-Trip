@@ -1,5 +1,8 @@
 import HomeView from '@/views/HomeView.vue'
 import PlanificationView from '@/views/PlanificationView.vue'
+import MapItinerary from '@/views/MapItinerary.vue'
+import MapResearch from '@/views/MapResearch.vue'
+import ProfileView from '@/views/ProfileView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -9,12 +12,12 @@ const router = createRouter({
     {
       path: '/map',
       name: 'map',
-      component: import('../views/MapItinerary.vue')
+      component: MapItinerary
     },
     {
       path: '/map-research',
       name: 'map-research',
-      component: () => import('../views/MapResearch.vue')
+      component: MapResearch
     },
     {
       path: '/login',
@@ -33,15 +36,30 @@ const router = createRouter({
     {
       path: '/reservations',
       name: 'reservations',
-      component: () => import('../views/LoginView.vue')
+      component: ProfileView,
+      meta: { requiresAuth: true }
     },
-    {
-      path: '/profile',
-      name: 'profile',
-      component: () => import('../views/ProfileView.vue')
-    },
-
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!isLoggedIn()) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
+function isLoggedIn() {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  return !!user.id; 
+}
 
 export default router
