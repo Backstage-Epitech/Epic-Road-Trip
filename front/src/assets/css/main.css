@@ -7,12 +7,12 @@ body {
 }
 
 .myBox {
-    background-image: url('../images/img-fond.png');
+    background-image: url("https://images.pexels.com/photos/1731427/pexels-photo-1731427.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
     background-size: cover;
     background-repeat: no-repeat;
     flex-direction: column;
     display: flex;
-    padding: 2rem;
+    padding: 3rem;
 }
 
 .u-about {
