@@ -9,7 +9,7 @@
       <button @click="captureScreenshot" id="btnScreenshot" type="button" class="btn btn-primary">Télécharger le pdf</button>
     </div>
     <div id="layout">
-      <div ref="mapContainer2" id="mapContainer2" class="map-container"></div>
+      <div ref="mapContainer" :id="'mapContainer'+this.numbercomposant" class="map-container"></div>
     </div>
   </template>
   
@@ -23,6 +23,10 @@
   
   export default {
     props: {
+      numbercomposant: {
+        required: true,
+        type: String
+      },
       research: {
         required: true,
         type: String
@@ -35,7 +39,7 @@
     },
     mounted() {
       const map = new mapboxgl.Map({
-          container: this.$refs.mapContainer2,
+          container: this.$refs.mapContainer,
           style: "mapbox://styles/mapbox/streets-v12", // Replace with your preferred map style
           center: [4.835659, 45.764043],
           zoom: 9,
@@ -60,7 +64,7 @@
         const popup = new mapboxgl.Popup({ offset: [0, -15] })
           .setLngLat(feature.geometry.coordinates)
           .setHTML(
-            `<h3>${feature.properties.name}</h3><p>${feature.properties.prix}</p>`
+            `<h3>${feature.properties.name}</h3><p>${feature.properties.prix}</p><button id="btnFavoris" type="button" class="btn btn-primary">Ajouter aux favoris</button>`
           )
           .addTo(this.map);
       });
@@ -131,7 +135,7 @@
         });
       },
       async captureScreenshot() {
-        const element = document.getElementById('mapContainer2');
+        const element = document.getElementById(`${'mapContainer'+this.numbercomposant}`);
   
         // Get the dimensions of the content within the mapContainer
         const elementWidth = element.scrollWidth;
