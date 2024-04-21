@@ -1,34 +1,44 @@
 <template>
   <div class="wrapper">
     <div class="item">
+      <a href="/planification">
       <div class="polaroid">
         <img src="../assets/images/enjoy.png" alt="img" />
         <div class="bona-nova-regular-italic caption">Activités</div>
       </div>
+      </a>
     </div>
     <div class="item">
+      <a href="/planification">
       <div class="polaroid">
         <img src="../assets/images/sleep.png" alt="img" />
         <div class="bona-nova-regular-italic caption">Hébergements</div>
       </div>
+      </a>
     </div>
     <div class="item">
+      <a href="/planification">
       <div class="polaroid">
         <img src="../assets/images/travel.png" alt="img" />
         <div class="bona-nova-regular-italic caption">Transports</div>
       </div>
+      </a>
     </div>
     <div class="item">
+      <a href="/planification">
       <div class="polaroid">
         <img src="../assets/images/eat.png" alt="img" />
         <div class="bona-nova-regular-italic caption">Restaurants</div>
       </div>
+      </a>
     </div>
     <div class="item">
+      <a href="/planification">
       <div class="polaroid">
         <img src="../assets/images/drink.png" alt="img" />
         <div class="bona-nova-regular-italic caption">Bars</div>
       </div>
+      </a>
     </div>
   </div>
 </template>

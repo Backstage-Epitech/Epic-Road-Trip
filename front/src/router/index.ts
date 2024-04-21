@@ -3,6 +3,7 @@ import PlanificationView from '@/views/PlanificationView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
+
 export const PLANIFICATION_URL = '/planification'
 
 const router = createRouter({
