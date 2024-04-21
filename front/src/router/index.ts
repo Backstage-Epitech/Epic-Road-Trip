@@ -2,6 +2,7 @@ import HomeView from '@/views/HomeView.vue'
 import PlanificationView from '@/views/PlanificationView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import Reservation from '@/components/Reservation.vue'
 
 
 export const PLANIFICATION_URL = '/planification'
@@ -29,6 +30,11 @@ const router = createRouter({
       component: ProfileView,
       meta: { requiresAuth: true }
     },
+    {
+      path:'/reservations',
+      name:'reservations',
+      component: Reservation
+    }
   ]
 })
 
