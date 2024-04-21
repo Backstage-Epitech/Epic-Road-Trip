@@ -1,24 +1,13 @@
 import HomeView from '@/views/HomeView.vue'
 import PlanificationView from '@/views/PlanificationView.vue'
-import MapItinerary from '@/views/MapItinerary.vue'
-import MapResearch from '@/views/MapResearch.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
+export const PLANIFICATION_URL = '/planification'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/map',
-      name: 'map',
-      component: MapItinerary
-    },
-    {
-      path: '/map-research',
-      name: 'map-research',
-      component: MapResearch
-    },
     {
       path: '/login',
       name: 'login',
@@ -29,7 +18,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/planification',
+      path: PLANIFICATION_URL,
       name: 'planification',
       component: PlanificationView
     },
