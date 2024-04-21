@@ -1,7 +1,7 @@
   <template>
     <div>
       <GMapAutocomplete
-        placeholder="This is a placeholder"
+        placeholder="Entrez un nom de ville"
         @place_changed="requestOverpass"
         :options="{type: ['(cities)']}"
       >
@@ -9,7 +9,7 @@
       <button @click="captureScreenshot" id="btnScreenshot" type="button" class="btn btn-primary">Télécharger le pdf</button>
     </div>
     <div id="layout">
-      <div ref="mapContainer" id="mapContainer" class="map-container"></div>
+      <div ref="mapContainer2" id="mapContainer2" class="map-container"></div>
     </div>
   </template>
   
@@ -35,7 +35,7 @@
     },
     mounted() {
       const map = new mapboxgl.Map({
-          container: this.$refs.mapContainer,
+          container: this.$refs.mapContainer2,
           style: "mapbox://styles/mapbox/streets-v12", // Replace with your preferred map style
           center: [4.835659, 45.764043],
           zoom: 9,
@@ -46,6 +46,23 @@
 
       this.map.once(`load`, (event) => {
         this.map.resize();
+      });
+
+      this.map.on('click', (event) => {
+        const features = this.map.queryRenderedFeatures(event.point, {
+          layers: [`${this.research}-layer`]
+        });
+        if (!features.length) {
+          return;
+        }
+        const feature = features[0];
+
+        const popup = new mapboxgl.Popup({ offset: [0, -15] })
+          .setLngLat(feature.geometry.coordinates)
+          .setHTML(
+            `<h3>${feature.properties.name}</h3><p>${feature.properties.prix}</p>`
+          )
+          .addTo(this.map);
       });
     },
     unmounted() {
@@ -64,7 +81,7 @@
         .then(resp => {
             console.log(resp);
 
-            myGeoJson += '{ "type": "FeatureCollection", "features": ['
+            myGeoJson += `[`;
 
             resp.data.forEach((element, index) => {
               myGeoJson += `{
@@ -77,42 +94,44 @@
                   ]
                 },
                 "properties": {
-                  "name": "${element.tags.name ? element.tags.name : "default_name"}",
+                  "id": "${index}",
+                  "name": "${(element.tags.name && !element.tags.name.includes('"')) ? element.tags.name : "default_name"}",
                   "prix": "${Math.floor(Math.random() * (100 - 20 + 1)) + 20}€"
                 }
               }`;
 
               if (index+1 !== resp.data.length) {
-                myGeoJson += ',';
+                myGeoJson += ', ';
               } else {
-                myGeoJson += ']}';
+                myGeoJson += ']';
               }
             });
         });
 
         console.log(myGeoJson);
-        this.map.on(`click`, () => {
-          this.map.addSource('earthquakes', {
-            type: 'geojson',
-            // Use a URL for the value for the `data` property.
-            data: myGeoJson
-          });
+        this.map.addSource(this.research, {
+          type: 'geojson',
+          // Use a URL for the value for the `data` property.
+          data: {
+            "type": "FeatureCollection",
+            "features": JSON.parse(myGeoJson)
+        }
+        });
 
-          this. map.addLayer({
-            'id': 'earthquakes-layer',
-            'type': 'circle',
-            'source': 'earthquakes',
-            'paint': {
-              'circle-radius': 4,
-              'circle-stroke-width': 2,
-              'circle-color': 'red',
-              'circle-stroke-color': 'white'
-            }
-          });
-        })
+        this.map.addLayer({
+          'id': `${this.research}-layer`,
+          'type': 'circle',
+          'source': `${this.research}`,
+          'paint': {
+            'circle-radius': 4,
+            'circle-stroke-width': 2,
+            'circle-color': '#007bff',
+            'circle-stroke-color': 'white'
+          }
+        });
       },
-      captureScreenshot() {
-        const element = document.getElementById('mapContainer');
+      async captureScreenshot() {
+        const element = document.getElementById('mapContainer2');
   
         // Get the dimensions of the content within the mapContainer
         const elementWidth = element.scrollWidth;
@@ -131,7 +150,7 @@
           height: elementHeight,
           x: 0, // Position of the top-left corner of the canvas within the element
           y: 0
-        }).then(canvas => {
+        }).then(async canvas => {
           const pdf = new jsPDF('landscape');
   
           // Add title
@@ -148,7 +167,6 @@
           const imgX = (pdf.internal.pageSize.width - imgWidth) / 2; // Center horizontally
           const imgY = 40; // Adjust positioning as needed
           pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
-  
           pdf.save('map_export.pdf');
         }).catch(error => {
           console.error('Error capturing screenshot:', error);
@@ -182,5 +200,6 @@
   
   #btnScreenshot {
     margin: 10px;
+    color: white;
   }
   </style>
