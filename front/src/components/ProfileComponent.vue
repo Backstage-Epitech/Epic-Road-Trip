@@ -24,7 +24,7 @@
             <span><strong>Favoris</strong></span>
             <div class="stats row">
               <div class="stat col-xs-4">
-                <li v-for="favori in userConnected.favoris" :key="favori.favorite.id">
+                <li v-for="favori in userConnected.favoris" :key="favori.favorite.id" ref="test">
                   {{ favori.favorite }}
                 </li>
               </div>
@@ -40,7 +40,7 @@
     </v-row>
   </v-container>
 </template>
-<script setup lang="ts">
+<script lang="ts">
 import { onMounted } from 'vue'
 import axios from 'axios'
 axios.defaults.baseURL = 'http://localhost:8081'
@@ -68,23 +68,28 @@ interface Favori {
 
 interface Voyage {}
 
-const userConnected: User = {
-  id: JSON.parse(localStorage.getItem('user') || '')['id'],
-  email: JSON.parse(localStorage.getItem('user') || '')['email'],
-  userName: JSON.parse(localStorage.getItem('user') || '')['userName'],
-  role: JSON.parse(localStorage.getItem('user') || '')['role'],
-  image: JSON.parse(localStorage.getItem('user') || '')['image'],
-  voyages: [],
-  favoris: []
-}
-
-onMounted(async () => {
-  await axios.get('/api/favorite/'+userConnected.id)
-  .then((resp) => {
-    console.log(resp)
-    userConnected.favoris = resp.data.favoriteList;
-  })
-})
+export default {
+    data() {
+      return {
+        userConnected: {
+          id: JSON.parse(localStorage.getItem('user') || '')['id'],
+          email: JSON.parse(localStorage.getItem('user') || '')['email'],
+          userName: JSON.parse(localStorage.getItem('user') || '')['userName'],
+          role: JSON.parse(localStorage.getItem('user') || '')['role'],
+          image: JSON.parse(localStorage.getItem('user') || '')['image'],
+          voyages: [],
+          favoris: []
+        } as User
+      }
+    },
+    async mounted() {
+      await axios.get('/api/favorite/'+this.userConnected.id)
+      .then((resp) => {
+        console.log(resp)
+        this.userConnected.favoris = resp.data.favoriteList;
+      })
+    }
+  }
 
 </script>
 <style scoped>
