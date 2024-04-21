@@ -125,7 +125,6 @@ export default {
       this.map.setCenter(
         new mapboxgl.LngLat(place.geometry.location.lng(), place.geometry.location.lat())
       )
-      await this.updateResearch('sleep')
     },
     async updateResearch(research: string) {
       console.log(this.research)
