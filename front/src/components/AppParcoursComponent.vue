@@ -15,19 +15,19 @@
         </v-window-item>
 
         <v-window-item value="two" class="mapTabs">
-          <MapResearch research="sleep" />            
+          <MapResearch research="sleep" numbercomposant="1" />            
         </v-window-item>
 
         <v-window-item value="three" class="mapTabs">
-          <MapResearch research="enjoy" />            
+          <MapResearch research="enjoy" numbercomposant="2" />            
         </v-window-item>
 
         <v-window-item value="four" class="mapTabs">
-          <MapResearch research="eat" />            
+          <MapResearch research="eat" numbercomposant="3" />            
         </v-window-item>
 
         <v-window-item value="five" class="mapTabs">
-          <MapResearch research="drink" />            
+          <MapResearch research="drink" numbercomposant="4" />            
         </v-window-item>
       </v-window>
     </v-card-text>
