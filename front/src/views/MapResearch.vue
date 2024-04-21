@@ -9,7 +9,7 @@
       <button @click="captureScreenshot" id="btnScreenshot" type="button" class="btn btn-primary">Télécharger le pdf</button>
     </div>
     <div id="layout">
-      <div ref="mapContainer" id="mapContainer" class="map-container"></div>
+      <div ref="mapContainer2" id="mapContainer2" class="map-container"></div>
     </div>
   </template>
   
@@ -35,7 +35,7 @@
     },
     mounted() {
       const map = new mapboxgl.Map({
-          container: this.$refs.mapContainer,
+          container: this.$refs.mapContainer2,
           style: "mapbox://styles/mapbox/streets-v12", // Replace with your preferred map style
           center: [4.835659, 45.764043],
           zoom: 9,
@@ -125,13 +125,13 @@
           'paint': {
             'circle-radius': 4,
             'circle-stroke-width': 2,
-            'circle-color': 'red',
+            'circle-color': '#007bff',
             'circle-stroke-color': 'white'
           }
         });
       },
-      captureScreenshot() {
-        const element = document.getElementById('mapContainer');
+      async captureScreenshot() {
+        const element = document.getElementById('mapContainer2');
   
         // Get the dimensions of the content within the mapContainer
         const elementWidth = element.scrollWidth;
@@ -150,7 +150,7 @@
           height: elementHeight,
           x: 0, // Position of the top-left corner of the canvas within the element
           y: 0
-        }).then(canvas => {
+        }).then(async canvas => {
           const pdf = new jsPDF('landscape');
   
           // Add title
@@ -167,7 +167,6 @@
           const imgX = (pdf.internal.pageSize.width - imgWidth) / 2; // Center horizontally
           const imgY = 40; // Adjust positioning as needed
           pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
-  
           pdf.save('map_export.pdf');
         }).catch(error => {
           console.error('Error capturing screenshot:', error);
@@ -201,5 +200,6 @@
   
   #btnScreenshot {
     margin: 10px;
+    color: white;
   }
   </style>
