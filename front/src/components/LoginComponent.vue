@@ -5,6 +5,7 @@ import router from '@/router'
 import axios from 'axios'
 import { ref } from 'vue'
 import EventBus from './EventBus.js'
+import { decodeCredential, type CallbackTypes } from 'vue3-google-login'
 
 const email = ref('')
 const password = ref('')
@@ -13,6 +14,12 @@ const errorMessage = ref('')
 interface User {
   email: string
   password: string
+}
+
+interface Credential {
+  email: string
+  name: string
+  picture: string
 }
 
 const loginUser = async () => {
@@ -34,6 +41,27 @@ const loginUser = async () => {
     console.error("Une erreur s'est produite lors de la connexion :", 401)
     errorMessage.value = 'Identifiants incorrects'
   }
+}
+
+const callback: CallbackTypes.CredentialCallback = (res) => {
+  const credential = decodeCredential(res.credential) as Credential
+  const userGoogle: Credential = {
+    email: credential.email,
+    name: credential.name,
+    picture: credential.picture
+  }
+
+  loginOrRegisterWithGoogle(userGoogle)
+}
+
+const loginOrRegisterWithGoogle = async (userGoogle: Credential) => {
+  const response = await axios.post('http://localhost:8081/auth/google', userGoogle)
+  if (response.data.token) {
+      localStorage.setItem('user', JSON.stringify(response.data.user))
+      localStorage.setItem('token', JSON.stringify(response.data.token))
+      EventBus.emit('EVENT_USER_LOGIN', { msg: JSON.stringify(response.data.user) })
+      router.push('/')
+    } 
 }
 </script>
 
@@ -83,10 +111,10 @@ const loginUser = async () => {
       </v-col>
       <v-col class="my-15 mx-auto" cols="12" md="6">
         <v-row class="ma-n3">
-          <v-col cols="12">
+          <v-col cols="12 text-center">
             <h3 class="text-center font-weight-bold">Google Auth</h3>
             <v-divider></v-divider>
-            Module de connection a creer
+            <GoogleLogin :callback="callback" />
           </v-col>
         </v-row>
       </v-col>

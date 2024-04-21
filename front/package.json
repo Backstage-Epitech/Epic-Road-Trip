@@ -26,8 +26,10 @@
     "mitt": "^3.0.1",
     "redaxios": "^0.5.1",
     "vue": "^3.4.15",
+    "vue-google-oauth2": "^1.5.10",
     "vue-router": "^4.2.5",
     "vue-search-select": "^3.2.0",
+    "vue3-google-login": "^2.0.26",
     "vuetify": "^3.5.9"
   },
   "devDependencies": {
