@@ -61,11 +61,18 @@
         }
         const feature = features[0];
 
+        const divElement = document.createElement('div');
+        const popupBtn = document.createElement('div');
+        popupBtn.innerHTML = `<button id="btnFavoris" type="button" class="btn btn-primary">Ajouter aux favoris</button>`;
+        divElement.innerHTML = `<h3>${feature.properties.name}</h3><p>${feature.properties.prix}</p>`;
+        divElement.appendChild(popupBtn);
+        popupBtn.addEventListener('click', (e) => {
+          console.log('Button clicked');
+        });
+
         const popup = new mapboxgl.Popup({ offset: [0, -15] })
           .setLngLat(feature.geometry.coordinates)
-          .setHTML(
-            `<h3>${feature.properties.name}</h3><p>${feature.properties.prix}</p><button id="btnFavoris" type="button" class="btn btn-primary">Ajouter aux favoris</button>`
-          )
+          .setDOMContent(divElement)
           .addTo(this.map);
       });
     },
