@@ -68,33 +68,34 @@ const tab = ref<string>('one')
       <v-col class="d-flex" cols="12" md="9">
         <v-row class="ma-n3">
           <v-col cols="12">
-            <v-sheet class="d-flex" color="red-lighten-3" height="250">
+            <v-sheet class="d-flex" height="250">
               <v-card-text>
                 <v-window v-model="tab">
                   <v-window-item value="one" class="mapTabs">
                     <MapItinerary />
                   </v-window-item>
-
                   <v-window-item value="two" class="mapTabs">
                     <HotelComponent />
                   </v-window-item>
-        <v-window-item value="two" class="mapTabs">
-          <MapResearch research="sleep" numbercomposant="1" />            
-        </v-window-item>
-
+                  <v-window-item value="two" class="mapTabs">
+                    <MapResearch research="sleep" numbercomposant="1" />
+                  </v-window-item>
                   <v-window-item value="three" class="mapTabs">
                     <MapResearch research="enjoy" numbercomposant="2" />
                   </v-window-item>
-
-        <v-window-item value="four" class="mapTabs">
-          <MapResearch research="eat" numbercomposant="3" />            
-        </v-window-item>
-
-        <v-window-item value="five" class="mapTabs">
-          <MapResearch research="drink" numbercomposant="4" />            
-        </v-window-item>
-      </v-window>
-    </v-card-text>
+                  <v-window-item value="four" class="mapTabs">
+                    <MapResearch research="eat" numbercomposant="3" />
+                  </v-window-item>
+                  <v-window-item value="five" class="mapTabs">
+                    <MapResearch research="drink" numbercomposant="4" />
+                  </v-window-item>
+                </v-window>
+              </v-card-text>
+            </v-sheet>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 <style scoped>
