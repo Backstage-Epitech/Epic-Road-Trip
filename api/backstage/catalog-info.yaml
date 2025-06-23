@@ -1,14 +1,23 @@
 apiVersion: backstage.io/v1alpha1
-kind: Component
+kind: API
 metadata:
   name: epic-road-trip-api
-  title: Epic Road Trip API
+  title: Epic road trip API
   description: Epic Road Trip api project NodeJS
+  tags:
+    - node
+    - postgres
 spec:
-  type: grpc
+  type: service
   owner: user:default/asanchez
   lifecycle: experimental
-  dependOn:
-    -component: epic-road-trip-web-app
-  providedBy:
-    -epic-road-trip-front
+  definition: |
+      syntax = "proto3";
+  
+      service Exampler {
+        rpc Example (ExampleMessage) returns (ExampleMessage) {};
+      }
+  
+      message ExampleMessage {
+        string example = 1;
+      };
