@@ -8,7 +8,7 @@ annotations:
   backstage.io/techdocs-ref: dir:.
 spec:
   type: servuce
-  owner: group:epitech
+  owner: user:default/asanchez
   lifecycle: experimental
   dependOn:
     -component: epic-road-trip-web-app
