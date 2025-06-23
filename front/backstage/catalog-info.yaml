@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: epic-road-trip-front
-  title: Epic road trip API
+  title: Epic road trip front
   description: Frontend de l'application Epic Road Trip
   tags:
   - frontend
