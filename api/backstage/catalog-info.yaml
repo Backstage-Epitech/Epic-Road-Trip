@@ -5,11 +5,10 @@ metadata:
   title: Epic Road Trip API
   description: Epic Road Trip api project NodeJS
 spec:
-  type: service
+  type: website
   owner: user:default/asanchez
   lifecycle: experimental
   dependOn:
     -component: epic-road-trip-web-app
   providedBy:
     -epic-road-trip-front
-#  definition:
