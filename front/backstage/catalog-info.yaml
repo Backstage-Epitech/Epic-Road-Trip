@@ -9,5 +9,5 @@ metadata:
 spec:
   type: website
   lifecycle: experimental
-  owner: group:epitech
+  owner: epitech
 
