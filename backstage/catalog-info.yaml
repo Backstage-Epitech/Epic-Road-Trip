@@ -4,9 +4,9 @@ metadata:
   name: epic-road-trip
   title: Epic road trip
   description: Frontend de l'application Epic Road Trip
-  tags:
-  - NodeJS
-  - vueJS
+tags:
+  - nodejs
+  - vuejs
   - postgres
 spec:
   type: website
