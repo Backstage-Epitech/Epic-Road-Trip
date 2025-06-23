@@ -5,7 +5,7 @@ metadata:
   description: Frontend de l'application Epic Road Trip
   tags:
     - web
-    - vue.js
+    - vuejs
 spec:
   type: website
   lifecycle: experimental
