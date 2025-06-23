@@ -4,20 +4,19 @@ metadata:
   name: epic-road-trip
   title: Epic road trip
   description: Frontend de l'application Epic Road Trip
-tags:
-  - nodejs
-  - vuejs
-  - postgres
-annotations:
+  tags:
+    - nodejs
+    - vuejs
+    - postgres
+  annotations:
     backstage.io/techdocs-ref: dir:.
 spec:
   type: website
   lifecycle: experimental
   owner: group:ingenierie-logicielle
-  providesApis: [epic-road-trip-api]
-
+  providesApis:
+    - epic-road-trip-api
 ---
-
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
@@ -29,14 +28,12 @@ spec:
   owner: group:ingenierie-logicielle
   lifecycle: experimental
   definition: |
-      syntax = "proto3";
-  
-      service Exampler {
-        rpc Example (ExampleMessage) returns (ExampleMessage) {};
-      }
-  
-      message ExampleMessage {
-        string example = 1;
-      };
+    syntax = "proto3";
 
+    service Exampler {
+      rpc Example (ExampleMessage) returns (ExampleMessage) {};
+    }
 
+    message ExampleMessage {
+      string example = 1;
+    };
