@@ -1,13 +1,22 @@
 FROM node:18
-# Create app directory
+
+# Dossier de travail
 WORKDIR /usr/src/app
-# Copy package.json and package-lock.json
-# COPY package*.json ./
-# Supprimer le dossier node_modules s'il existe déjà
+
+# ✅ Copie les fichiers nécessaires à l'installation
+COPY package*.json ./
+
+# Supprime le node_modules s'il existe (souvent inutile ici, mais OK pour clean)
 RUN rm -rf node_modules
-# Install app dependencies
+
+# Installe les dépendances
 RUN npm install
-# Copy the rest of the application code
+
+# Copie le reste du code
 COPY . .
-EXPOSE 80
-CMD [ "npm", "run", "host" ]
+
+# Expose le bon port (change 5173 si besoin)
+EXPOSE 5173
+
+# Commande de lancement
+CMD ["npm", "run", "host"]
