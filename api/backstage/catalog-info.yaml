@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: epic-road-trip-api
+  title: Epic Road Trip API
+  description: Epic Road Trip api project NodeJS
+annotations:
+  backstage.io/techdocs-ref: dir:.
+spec:
+  type: servuce
+  owner: group:epitech
+  lifecycle: experimental
+  dependOn:
+    -component: epic-road-trip-web-app
+  providedBy:
+    -epic-road-trip-front
+#  definition:

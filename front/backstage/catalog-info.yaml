@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: epic-road-trip-front
+  title: Epic Road Trip Front
+  description: Epic Road Trip front project vueJS
+annotations:
+  backstage.io/techdocs-ref: dir:.
+spec:
+  type: website
+  owner: group:epitech
+  lifecycle: experimental
+  dependOn:
+    -component: epic-road-trip-web-app
+  consumesApis:
+    -epic-road-trip-api
