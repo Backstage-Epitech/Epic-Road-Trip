@@ -10,6 +10,6 @@ metadata:
 spec:
   type: website
   lifecycle: experimental
-  owner: user:default/asanchez
+  owner: group:ingenierie-logicielle
   providesApis: [epic-road-trip-api]
 
