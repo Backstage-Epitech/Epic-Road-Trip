@@ -3,9 +3,9 @@ kind: Component
 metadata:
   name: epic-road-trip-front
   description: Frontend de l'application Epic Road Trip
-  tags:
-    - web
-    - vuejs
+tags:
+  - frontend
+  - vue.js
 spec:
   type: website
   lifecycle: experimental
