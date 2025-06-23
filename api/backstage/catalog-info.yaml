@@ -9,7 +9,7 @@ metadata:
     - postgres
 spec:
   type: service
-  owner: user:default/asanchez
+  owner: group:ingenierie-logicielle
   lifecycle: experimental
   definition: |
       syntax = "proto3";
