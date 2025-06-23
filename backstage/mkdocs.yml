@@ -2,5 +2,6 @@ site_name: 'Epic Road Trip – *Dream & Ride*'
 
 nav: 
   - Projet: PROJECT.md
+
 plugins:
-  -techdocs-core
+  - techdocs-core
