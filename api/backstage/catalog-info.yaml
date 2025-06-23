@@ -5,7 +5,7 @@ metadata:
   title: Epic Road Trip API
   description: Epic Road Trip api project NodeJS
 spec:
-  type: website
+  type: grpc
   owner: user:default/asanchez
   lifecycle: experimental
   dependOn:
