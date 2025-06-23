@@ -16,27 +16,3 @@ spec:
   owner: group:ingenierie-logicielle
   providesApis: [epic-road-trip-api]
 
----
-
-apiVersion: backstage.io/v1alpha1
-kind: API
-metadata:
-  name: epic-road-trip-api
-  title: Epic road trip API
-  description: Epic Road Trip api project NodeJS
-spec:
-  type: service
-  owner: group:ingenierie-logicielle
-  lifecycle: experimental
-  definition: |
-      syntax = "proto3";
-  
-      service Exampler {
-        rpc Example (ExampleMessage) returns (ExampleMessage) {};
-      }
-  
-      message ExampleMessage {
-        string example = 1;
-      };
-
-
