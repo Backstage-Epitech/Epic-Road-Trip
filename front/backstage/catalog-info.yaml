@@ -6,5 +6,5 @@ metadata:
 spec:
   type: website
   lifecycle: experimental
-  owner: epitech
+  owner: user:default/asanchez
 
