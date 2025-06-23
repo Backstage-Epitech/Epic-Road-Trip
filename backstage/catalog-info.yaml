@@ -1,12 +1,27 @@
 apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: epic-road-trip
+  title: Epic road trip
+  description: Frontend de l'application Epic Road Trip
+  tags:
+  - NodeJS
+  - vueJS
+  - postgres
+spec:
+  type: website
+  lifecycle: experimental
+  owner: group:ingenierie-logicielle
+  providesApis: [epic-road-trip-api]
+
+---
+
+apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
   name: epic-road-trip-api
   title: Epic road trip API
   description: Epic Road Trip api project NodeJS
-  tags:
-    - node
-    - postgres
 spec:
   type: service
   owner: group:ingenierie-logicielle
@@ -21,3 +36,5 @@ spec:
       message ExampleMessage {
         string example = 1;
       };
+
+
