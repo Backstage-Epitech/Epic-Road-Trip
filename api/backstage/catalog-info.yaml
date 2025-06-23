@@ -4,10 +4,8 @@ metadata:
   name: epic-road-trip-api
   title: Epic Road Trip API
   description: Epic Road Trip api project NodeJS
-annotations:
-  backstage.io/techdocs-ref: dir:.
 spec:
-  type: servuce
+  type: service
   owner: user:default/asanchez
   lifecycle: experimental
   dependOn:
