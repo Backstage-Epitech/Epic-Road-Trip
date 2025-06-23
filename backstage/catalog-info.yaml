@@ -8,6 +8,8 @@ tags:
   - nodejs
   - vuejs
   - postgres
+annotations:
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: website
   lifecycle: experimental
