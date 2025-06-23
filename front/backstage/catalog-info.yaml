@@ -5,9 +5,9 @@ metadata:
   description: Frontend de l'application Epic Road Trip
   tags:
     - web
-    - react
+    - vueJS
 spec:
   type: website
   lifecycle: experimental
-  owner: user:default/asanchez
+  owner: group:epitech
 
